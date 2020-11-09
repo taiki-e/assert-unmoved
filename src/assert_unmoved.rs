@@ -42,7 +42,8 @@ impl<T> AssertUnmoved<T> {
 
     /// Gets a mutable reference to the underlying type.
     ///
-    /// Note that this method can only be called before pinned since `AssertUnmoved` is `!Unpin`.
+    /// Note that this method can only be called before pinned since
+    /// `AssertUnmoved` is `!Unpin` (this is guaranteed by the type system!).
     pub fn get_mut(&mut self) -> &mut T {
         &mut self.inner
     }

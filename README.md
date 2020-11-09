@@ -123,6 +123,14 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
 [pin]: https://doc.rust-lang.org/nightly/std/pin/index.html
 
+## Related Projects
+
+* [pin-project]: A crate for safe and ergonomic pin-projection.
+* [pin-project-lite]: A lightweight version of pin-project written with declarative macros.
+
+[pin-project]: https://github.com/taiki-e/pin-project
+[pin-project-lite]: https://github.com/taiki-e/pin-project-lite
+
 ## License
 
 Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or [MIT license](LICENSE-MIT) at your option.
