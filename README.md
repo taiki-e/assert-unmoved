@@ -21,6 +21,11 @@ This is a rewrite of [`futures-test`](https://docs.rs/futures-test)'s
 `AssertUnmoved` to allow use in more use cases. This also supports traits
 other than `futures`.
 
+Many of the changes made in this project are also reflected upstream: [rust-lang/futures-rs#2148], [rust-lang/futures-rs#2208]
+
+[rust-lang/futures-rs#2148]: https://github.com/rust-lang/futures-rs/pull/2148
+[rust-lang/futures-rs#2208]: https://github.com/rust-lang/futures-rs/pull/2208
+
 ## Usage
 
 Add this to your `Cargo.toml`:
