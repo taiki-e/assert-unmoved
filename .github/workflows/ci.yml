@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - staging
+  schedule:
+    - cron: '0 1 * * *'
+
+env:
+  CARGO_INCREMENTAL: 0
+  RUSTFLAGS: -D warnings
+  RUST_BACKTRACE: 1
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        rust:
+          # This is the minimum supported Rust version of this crate.
+          # When updating this, the reminder to update the minimum supported Rust version in README.md.
+          - 1.37.0
+          - stable
+          - beta
+          - nightly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust
+        run: ci/install-rust.sh ${{ matrix.rust }}
+      - if: startsWith(matrix.rust, 'nightly')
+        run: cargo install cargo-hack
+      - run: cargo test
+      - if: startsWith(matrix.rust, 'nightly')
+        run: cargo test --all-features
+      - if: startsWith(matrix.rust, 'nightly')
+        run: cargo hack check --all --feature-powerset --no-dev-deps --optional-deps
+      - if: startsWith(matrix.rust, 'nightly')
+        run: bash scripts/check-minimal-versions.sh
+
+  clippy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust and Clippy
+        run: ci/install-component.sh clippy
+      - run: cargo clippy --all --all-features --all-targets
+
+  rustfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust and Rustfmt
+        run: ci/install-component.sh rustfmt
+      - run: cargo fmt --all -- --check
+
+  rustdoc:
+    env:
+      RUSTDOCFLAGS: -D warnings
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust
+        run: ci/install-rust.sh
+      - run: cargo doc --no-deps --all --all-features
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: shellcheck **/*.sh
+
+  # These jobs don't actually test anything, but they're used to tell bors the
+  # build completed, as there is no practical way to detect when a workflow is
+  # successful listening to webhooks only.
+  #
+  # ALL THE PREVIOUS JOBS NEEDS TO BE ADDED TO THE `needs` SECTION OF THIS JOB!
+
+  ci-success:
+    name: ci
+    if: github.event_name == 'push' && success()
+    needs:
+      - test
+      - clippy
+      - rustfmt
+      - rustdoc
+      - shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark the job as a success
+        run: exit 0
+  ci-failure:
+    name: ci
+    if: github.event_name == 'push' && !success()
+    needs:
+      - test
+      - clippy
+      - rustfmt
+      - rustdoc
+      - shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark the job as a failure
+        run: exit 1

@@ -1,0 +1,44 @@
+[package]
+name = "assert-unmoved"
+version = "0.1.0"
+authors = ["Taiki Endo <te316e89@gmail.com>"]
+edition = "2018"
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/taiki-e/assert-unmoved"
+homepage = "https://github.com/taiki-e/assert-unmoved"
+documentation = "https://docs.rs/assert-unmoved"
+keywords = ["assert", "pin"]
+categories = ["development-tools::testing"]
+readme = "README.md"
+description = """
+A type that asserts that the underlying type is not moved after being pinned
+and mutably accessed.
+"""
+
+[package.metadata.docs.rs]
+all-features = true
+targets = ["x86_64-unknown-linux-gnu"]
+
+[workspace]
+
+[features]
+# Implements `futures` 0.3 traits for `assert-unmoved` types
+futures03 = ["futures-core", "futures-io", "futures-sink"]
+# Implements `tokio` 0.2 traits for `assert-unmoved` types
+tokio02 = ["tokio02-crate", "bytes05"]
+
+[dependencies]
+pin-project = "1"
+
+futures-core = { version = "0.3", optional = true, default-features = false }
+futures-io = { version = "0.3", optional = true, default-features = false, features = ["std"] }
+futures-sink = { version = "0.3", optional = true, default-features = false }
+# features = ["io-util"] is needed until next 0.2.x version released: https://github.com/tokio-rs/tokio/commit/7a60a0b362337c9986a8d8bf59f458691685bf3e#diff-2665a294abe738fb153a2d6230939f613401e55a1276ad2e5f6089eecc0f3043
+tokio02-crate = { package = "tokio", version = "0.2.5", optional = true, default-features = false, features = ["io-util"] }
+bytes05 = { package = "bytes", version = "0.5", optional = true, default-features = false, features = ["std"] }
+# Implements `tokio` 0.3 traits for `assert-unmoved` types
+tokio03 = { package = "tokio", version = "0.3", optional = true, default-features = false }
+
+[dev-dependencies]
+static_assertions = "1"
+futures-util = { version = "0.3", default-features = false, features = ["std"] }
