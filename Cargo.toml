@@ -33,8 +33,7 @@ pin-project = "1"
 futures-core = { version = "0.3", optional = true, default-features = false }
 futures-io = { version = "0.3", optional = true, default-features = false, features = ["std"] }
 futures-sink = { version = "0.3", optional = true, default-features = false }
-# features = ["io-util"] is needed until next 0.2.x version released: https://github.com/tokio-rs/tokio/commit/7a60a0b362337c9986a8d8bf59f458691685bf3e#diff-2665a294abe738fb153a2d6230939f613401e55a1276ad2e5f6089eecc0f3043
-tokio02-crate = { package = "tokio", version = "0.2.5", optional = true, default-features = false, features = ["io-util"] }
+tokio02-crate = { package = "tokio", version = "0.2.5", optional = true, default-features = false }
 bytes05 = { package = "bytes", version = "0.5", optional = true, default-features = false, features = ["std"] }
 # Implements `tokio` 0.3 traits for `assert-unmoved` types
 tokio03 = { package = "tokio", version = "0.3", optional = true, default-features = false }
