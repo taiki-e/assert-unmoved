@@ -50,6 +50,10 @@ impl<T> AssertUnmoved<T> {
 
     /// Gets a pinned mutable reference to the underlying type.
     ///
+    /// # Panics
+    ///
+    /// Panics if this `AssertUnmoved` moved after being pinned and mutably accessed.
+    ///
     /// # Examples
     ///
     /// Implement own [`Stream`] trait for `AssertUnmoved`.
@@ -91,6 +95,9 @@ impl<T> AssertUnmoved<T> {
 
 #[pinned_drop]
 impl<T> PinnedDrop for AssertUnmoved<T> {
+    /// # Panics
+    ///
+    /// Panics if this `AssertUnmoved` moved after being pinned and mutably accessed.
     fn drop(self: Pin<&mut Self>) {
         // If the thread is panicking then we can't panic again as that will
         // cause the process to be aborted.
