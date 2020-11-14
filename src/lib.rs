@@ -1,9 +1,8 @@
 //! A type that asserts that the underlying type is not moved after being [pinned][pin]
 //! and mutably accessed.
 //!
-//! This is a rewrite of [`futures-test`](https://docs.rs/futures-test)'s
-//! `AssertUnmoved` to allow use in more use cases. This also supports traits
-//! other than `futures`.
+//! This is a rewrite of [futures-test]'s `AssertUnmoved` to allow use in more
+//! use cases. This also supports traits other than [futures][futures03].
 //!
 //! # Examples
 //!
@@ -88,13 +87,17 @@
 //!
 //! # Optional features
 //!
-//! * **`futures03`** — Implements [`futures` 0.3](https://docs.rs/futures/0.3) traits for `assert-unmoved` types.
-//! * **`tokio02`** — Implements [`tokio` 0.2](https://docs.rs/tokio/0.2) traits for `assert-unmoved` types.
-//! * **`tokio03`** — Implements [`tokio` 0.3](https://docs.rs/tokio/0.3) traits for `assert-unmoved` types.
+//! * **`futures03`** — Implements [futures 0.3][futures03] traits for assert-unmoved types.
+//! * **`tokio02`** — Implements [tokio 0.2][tokio02] traits for assert-unmoved types.
+//! * **`tokio03`** — Implements [tokio 0.3][tokio03] traits for assert-unmoved types.
 //!
 //! [`Pin::new_unchecked`]: std::pin::Pin::new_unchecked
 //! [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
+//! [futures-test]: https://docs.rs/futures-test
+//! [futures03]: https://docs.rs/futures/0.3
 //! [pin]: core::pin
+//! [tokio02]: https://docs.rs/tokio/0.2
+//! [tokio03]: https://docs.rs/tokio/0.3
 
 #![doc(html_root_url = "https://docs.rs/assert-unmoved/0.1.0")]
 #![doc(test(
