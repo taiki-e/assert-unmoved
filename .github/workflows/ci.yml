@@ -32,13 +32,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Rust
-        run: ci/install-rust.sh ${{ matrix.rust }}
+      - uses: taiki-e/github-actions/install-rust@main
+        with:
+          toolchain: ${{ matrix.rust }}
       - if: startsWith(matrix.rust, 'nightly')
         run: cargo install cargo-hack
-      - run: cargo test
+      - run: cargo test --all
       - if: startsWith(matrix.rust, 'nightly')
-        run: cargo test --all-features
+        run: cargo test --all --all-features
       - if: startsWith(matrix.rust, 'nightly')
         run: cargo hack check --all --feature-powerset --no-dev-deps --optional-deps
       - if: startsWith(matrix.rust, 'nightly')
@@ -48,16 +49,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Rust and Clippy
-        run: ci/install-component.sh clippy
+      - uses: taiki-e/github-actions/install-rust@main
+        with:
+          component: clippy
       - run: cargo clippy --all --all-features --all-targets
 
   rustfmt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Rust and Rustfmt
-        run: ci/install-component.sh rustfmt
+      - uses: taiki-e/github-actions/install-rust@main
+        with:
+          component: rustfmt
       - run: cargo fmt --all -- --check
 
   rustdoc:
@@ -66,8 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Rust
-        run: ci/install-rust.sh
+      - uses: taiki-e/github-actions/install-rust@main
       - run: cargo doc --no-deps --all --all-features
 
   shellcheck:
