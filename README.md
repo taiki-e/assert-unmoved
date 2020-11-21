@@ -1,8 +1,8 @@
 # assert-unmoved
 
 [![crates.io](https://img.shields.io/crates/v/assert-unmoved.svg?style=flat-square&logo=rust)](https://crates.io/crates/assert-unmoved)
-[![docs.rs](https://img.shields.io/badge/docs.rs-assert--unmoved-blue?style=flat-square)][docs]
-[![license](https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=flat-square)](#license)
+[![docs.rs](https://img.shields.io/badge/docs.rs-assert--unmoved-blue?style=flat-square)](https://docs.rs/assert-unmoved)
+[![license](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue.svg?style=flat-square)](#license)
 [![rustc](https://img.shields.io/badge/rustc-1.37+-blue.svg?style=flat-square)](https://www.rust-lang.org)
 [![build status](https://img.shields.io/github/workflow/status/taiki-e/assert-unmoved/CI/master?style=flat-square)](https://github.com/taiki-e/assert-unmoved/actions?query=workflow%3ACI+branch%3Amaster)
 
@@ -109,7 +109,6 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 
 [`Pin::new_unchecked`]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.new_unchecked
 [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
-[docs]: https://docs.rs/assert-unmoved
 [futures-test]: https://docs.rs/futures-test
 [futures03]: https://docs.rs/futures/0.3
 [pin]: https://doc.rust-lang.org/std/pin/index.html
