@@ -99,7 +99,6 @@
 //! [tokio02]: https://docs.rs/tokio/0.2
 //! [tokio03]: https://docs.rs/tokio/0.3
 
-#![doc(html_root_url = "https://docs.rs/assert-unmoved/0.1.0")]
 #![doc(test(
     no_crate_inject,
     attr(deny(warnings, rust_2018_idioms, single_use_lifetimes), allow(dead_code))
