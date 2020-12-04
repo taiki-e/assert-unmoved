@@ -26,6 +26,7 @@ futures03 = ["futures-core", "futures-io", "futures-sink"]
 # Implements tokio 0.2 traits for assert-unmoved types.
 tokio02 = ["tokio02-crate", "bytes05"]
 
+# NB: futures-*, tokio, and bytes are public dependencies.
 [dependencies]
 pin-project = "1"
 
