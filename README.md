@@ -6,13 +6,14 @@
 [![rustc](https://img.shields.io/badge/rustc-1.37+-blue.svg?style=flat-square)](https://www.rust-lang.org)
 [![build status](https://img.shields.io/github/workflow/status/taiki-e/assert-unmoved/CI/master?style=flat-square)](https://github.com/taiki-e/assert-unmoved/actions?query=workflow%3ACI+branch%3Amaster)
 
-A type that asserts that the underlying type is not moved after being [pinned][pin]
-and mutably accessed.
+A type that asserts that the underlying type is not moved after being
+[pinned][pin] and mutably accessed.
 
 This is a rewrite of [futures-test]'s `AssertUnmoved` to allow use in more
 use cases. This also supports traits other than [futures][futures03].
 
-Many of the changes made in this project are also reflected upstream: [rust-lang/futures-rs#2148], [rust-lang/futures-rs#2208]
+Many of the changes made in this project are also reflected upstream:
+[rust-lang/futures-rs#2148], [rust-lang/futures-rs#2208]
 
 ## Usage
 
@@ -127,6 +128,9 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 
 ## License
 
-Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or [MIT license](LICENSE-MIT) at your option.
+Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or
+[MIT license](LICENSE-MIT) at your option.
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall
+be dual licensed as above, without any additional terms or conditions.

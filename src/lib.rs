@@ -1,5 +1,5 @@
-//! A type that asserts that the underlying type is not moved after being [pinned][pin]
-//! and mutably accessed.
+//! A type that asserts that the underlying type is not moved after being
+//! [pinned][pin] and mutably accessed.
 //!
 //! This is a rewrite of [futures-test]'s `AssertUnmoved` to allow use in more
 //! use cases. This also supports traits other than [futures][futures03].
