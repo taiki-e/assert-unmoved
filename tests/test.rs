@@ -8,6 +8,52 @@ assert_not_impl_all!(AssertUnmoved<()>: Unpin);
 assert_impl_all!(AssertUnmoved<()>: Send, Sync);
 assert_not_impl_all!(AssertUnmoved<*const ()>: Send, Sync);
 
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn Future<Output = ()>>>>: Future<Output = ()>);
+
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_core::FusedFuture<Output = ()>>>>: futures_core::FusedFuture<Output = ()>);
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_core::Stream<Item = ()>>>>: futures_core::Stream<Item = ()>);
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_core::FusedStream<Item = ()>>>>: futures_core::FusedStream<Item = ()>);
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_sink::Sink<(), Error = ()>>>>: futures_sink::Sink<(), Error = ()>);
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncRead>>>: futures_io::AsyncRead);
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncWrite>>>: futures_io::AsyncWrite);
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncSeek>>>: futures_io::AsyncSeek);
+#[cfg(feature = "futures03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncBufRead>>>: futures_io::AsyncBufRead);
+
+#[cfg(feature = "tokio02")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncRead>>>: tokio02_crate::io::AsyncRead);
+#[cfg(feature = "tokio02")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncWrite>>>: tokio02_crate::io::AsyncWrite);
+#[cfg(feature = "tokio02")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncSeek>>>: tokio02_crate::io::AsyncSeek);
+#[cfg(feature = "tokio02")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncBufRead>>>: tokio02_crate::io::AsyncBufRead);
+
+#[cfg(feature = "tokio03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncRead>>>: tokio03_crate::io::AsyncRead);
+#[cfg(feature = "tokio03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncWrite>>>: tokio03_crate::io::AsyncWrite);
+#[cfg(feature = "tokio03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncSeek>>>: tokio03_crate::io::AsyncSeek);
+#[cfg(feature = "tokio03")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncBufRead>>>: tokio03_crate::io::AsyncBufRead);
+
+#[cfg(feature = "tokio1")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncRead>>>: tokio1_crate::io::AsyncRead);
+#[cfg(feature = "tokio1")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncWrite>>>: tokio1_crate::io::AsyncWrite);
+#[cfg(feature = "tokio1")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncSeek>>>: tokio1_crate::io::AsyncSeek);
+#[cfg(feature = "tokio1")]
+assert_impl_all!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncBufRead>>>: tokio1_crate::io::AsyncBufRead);
+
 #[test]
 fn dont_panic_when_not_polled() {
     // This shouldn't panic.

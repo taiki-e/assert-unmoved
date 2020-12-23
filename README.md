@@ -104,9 +104,10 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 
 ## Optional features
 
-* **`futures03`** — Implements [futures 0.3][futures03] traits for assert-unmoved types.
-* **`tokio02`** — Implements [tokio 0.2][tokio02] traits for assert-unmoved types.
-* **`tokio03`** — Implements [tokio 0.3][tokio03] traits for assert-unmoved types.
+* **`futures03`** — Implements [futures v0.3][futures03] traits for assert-unmoved types.
+* **`tokio1`** — Implements [tokio v1][tokio1] traits for assert-unmoved types.
+* **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
+* **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
 
 [`Pin::new_unchecked`]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.new_unchecked
 [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
@@ -117,6 +118,7 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 [rust-lang/futures-rs#2208]: https://github.com/rust-lang/futures-rs/pull/2208
 [tokio02]: https://docs.rs/tokio/0.2
 [tokio03]: https://docs.rs/tokio/0.3
+[tokio1]: https://docs.rs/tokio/1
 
 ## Related Projects
 

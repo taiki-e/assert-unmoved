@@ -359,7 +359,7 @@ mod tokio03 {
         pin::Pin,
         task::{Context, Poll},
     };
-    use tokio03::io;
+    use tokio03_crate::io;
 
     impl<R: io::AsyncRead> io::AsyncRead for AssertUnmoved<R> {
         fn poll_read(
@@ -386,6 +386,76 @@ mod tokio03 {
 
         fn poll_shutdown(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_shutdown(cx)
+        }
+    }
+
+    impl<S: io::AsyncSeek> io::AsyncSeek for AssertUnmoved<S> {
+        fn start_seek(self: Pin<&mut Self>, pos: io::SeekFrom) -> io::Result<()> {
+            self.get_pin_mut().start_seek(pos)
+        }
+
+        fn poll_complete(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<u64>> {
+            self.get_pin_mut().poll_complete(cx)
+        }
+    }
+
+    impl<R: io::AsyncBufRead> io::AsyncBufRead for AssertUnmoved<R> {
+        fn poll_fill_buf(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<&[u8]>> {
+            self.get_pin_mut().poll_fill_buf(cx)
+        }
+
+        fn consume(self: Pin<&mut Self>, amt: usize) {
+            self.get_pin_mut().consume(amt)
+        }
+    }
+}
+
+#[cfg(feature = "tokio1")]
+mod tokio1 {
+    use super::AssertUnmoved;
+    use std::{
+        pin::Pin,
+        task::{Context, Poll},
+    };
+    use tokio1_crate::io;
+
+    impl<R: io::AsyncRead> io::AsyncRead for AssertUnmoved<R> {
+        fn poll_read(
+            self: Pin<&mut Self>,
+            cx: &mut Context<'_>,
+            buf: &mut io::ReadBuf<'_>,
+        ) -> Poll<io::Result<()>> {
+            self.get_pin_mut().poll_read(cx, buf)
+        }
+    }
+
+    impl<W: io::AsyncWrite> io::AsyncWrite for AssertUnmoved<W> {
+        fn poll_write(
+            self: Pin<&mut Self>,
+            cx: &mut Context<'_>,
+            buf: &[u8],
+        ) -> Poll<io::Result<usize>> {
+            self.get_pin_mut().poll_write(cx, buf)
+        }
+
+        fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+            self.get_pin_mut().poll_flush(cx)
+        }
+
+        fn poll_shutdown(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+            self.get_pin_mut().poll_shutdown(cx)
+        }
+
+        fn poll_write_vectored(
+            self: Pin<&mut Self>,
+            cx: &mut Context<'_>,
+            bufs: &[std::io::IoSlice<'_>],
+        ) -> Poll<Result<usize, io::Error>> {
+            self.get_pin_mut().poll_write_vectored(cx, bufs)
+        }
+
+        fn is_write_vectored(&self) -> bool {
+            self.get_ref().is_write_vectored()
         }
     }
 
