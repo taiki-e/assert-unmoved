@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+* Add support for tokio v1.
+
 ## [0.1.0] - 2020-11-09
 
 Initial release
