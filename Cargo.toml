@@ -9,6 +9,7 @@ documentation = "https://docs.rs/assert-unmoved"
 keywords = ["assert", "pin"]
 categories = ["development-tools::testing"]
 readme = "README.md"
+exclude = ["/.github", "/scripts"]
 description = """
 A type that asserts that the underlying type is not moved after being pinned
 and mutably accessed.
