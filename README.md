@@ -104,10 +104,10 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 
 ## Optional features
 
-* **`futures03`** — Implements [futures v0.3][futures03] traits for assert-unmoved types.
-* **`tokio1`** — Implements [tokio v1][tokio1] traits for assert-unmoved types.
-* **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
-* **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
+- **`futures03`** — Implements [futures v0.3][futures03] traits for assert-unmoved types.
+- **`tokio1`** — Implements [tokio v1][tokio1] traits for assert-unmoved types.
+- **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
+- **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
 
 [`Pin::new_unchecked`]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.new_unchecked
 [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
@@ -122,8 +122,8 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 
 ## Related Projects
 
-* [pin-project]: A crate for safe and ergonomic pin-projection.
-* [pin-project-lite]: A lightweight version of pin-project written with declarative macros.
+- [pin-project]: A crate for safe and ergonomic pin-projection.
+- [pin-project-lite]: A lightweight version of pin-project written with declarative macros.
 
 [pin-project]: https://github.com/taiki-e/pin-project
 [pin-project-lite]: https://github.com/taiki-e/pin-project-lite
