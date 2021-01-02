@@ -80,3 +80,21 @@ fn dont_double_panic() {
     let pinned_boxed_future = unsafe { Pin::new_unchecked(&mut *future) };
     assert!(pinned_boxed_future.poll(&mut cx).is_pending());
 }
+
+#[test]
+#[should_panic(expected = "AssertUnmoved moved before drop")]
+fn moved_before_drop() {
+    struct Test<T>(Option<T>);
+
+    impl<T> Drop for Test<T> {
+        fn drop(&mut self) {
+            // This moves `T`.
+            self.0.take();
+        }
+    }
+
+    let mut x = Test(Some(AssertUnmoved::new(pending::<()>())));
+    let x = unsafe { Pin::new_unchecked(&mut x) };
+    // This `map_unchecked_mut` is unsound because `Test`'s destructor moves `T`.
+    unsafe { x.map_unchecked_mut(|x| &mut x.0) }.as_pin_mut().unwrap().get_pin_mut();
+}
