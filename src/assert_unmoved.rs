@@ -108,6 +108,12 @@ impl<T> PinnedDrop for AssertUnmoved<T> {
     }
 }
 
+impl<T: Clone> Clone for AssertUnmoved<T> {
+    fn clone(&self) -> Self {
+        Self::new(self.get_ref().clone())
+    }
+}
+
 impl<T> Deref for AssertUnmoved<T> {
     type Target = T;
 
