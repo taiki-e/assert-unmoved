@@ -1,4 +1,3 @@
-use pin_project::{pin_project, pinned_drop};
 use std::{
     future::Future,
     ops::Deref,
@@ -7,6 +6,8 @@ use std::{
     task::{Context, Poll},
     thread,
 };
+
+use pin_project::{pin_project, pinned_drop};
 
 /// A type that asserts that the underlying type is not moved after being pinned
 /// and mutably accessed.
@@ -59,11 +60,12 @@ impl<T> AssertUnmoved<T> {
     /// Implement own [`Stream`] trait for `AssertUnmoved`.
     ///
     /// ```rust
-    /// use assert_unmoved::AssertUnmoved;
     /// use std::{
     ///     pin::Pin,
     ///     task::{Context, Poll},
     /// };
+    ///
+    /// use assert_unmoved::AssertUnmoved;
     ///
     /// pub trait MyStream {
     ///     type Item;
@@ -144,17 +146,19 @@ impl<F: Future> Future for AssertUnmoved<F> {
 
 #[cfg(feature = "futures03")]
 mod futures03 {
-    use super::AssertUnmoved;
+    use std::{
+        pin::Pin,
+        task::{Context, Poll},
+    };
+
     use futures_core::{
         future::FusedFuture,
         stream::{FusedStream, Stream},
     };
     use futures_io as io;
     use futures_sink::Sink;
-    use std::{
-        pin::Pin,
-        task::{Context, Poll},
-    };
+
+    use super::AssertUnmoved;
 
     impl<F: FusedFuture> FusedFuture for AssertUnmoved<F> {
         fn is_terminated(&self) -> bool {
@@ -263,15 +267,17 @@ mod futures03 {
 
 #[cfg(feature = "tokio02")]
 mod tokio02 {
-    use super::AssertUnmoved;
-    use bytes05::{Buf, BufMut};
     use std::{
         io,
         mem::MaybeUninit,
         pin::Pin,
         task::{Context, Poll},
     };
+
+    use bytes05::{Buf, BufMut};
     use tokio02_crate::io::{AsyncBufRead, AsyncRead, AsyncSeek, AsyncWrite};
+
+    use super::AssertUnmoved;
 
     impl<R: AsyncRead> AsyncRead for AssertUnmoved<R> {
         unsafe fn prepare_uninitialized_buffer(&self, buf: &mut [MaybeUninit<u8>]) -> bool {
@@ -354,12 +360,14 @@ mod tokio02 {
 
 #[cfg(feature = "tokio03")]
 mod tokio03 {
-    use super::AssertUnmoved;
     use std::{
         pin::Pin,
         task::{Context, Poll},
     };
+
     use tokio03_crate::io;
+
+    use super::AssertUnmoved;
 
     impl<R: io::AsyncRead> io::AsyncRead for AssertUnmoved<R> {
         fn poll_read(
@@ -412,12 +420,14 @@ mod tokio03 {
 
 #[cfg(feature = "tokio1")]
 mod tokio1 {
-    use super::AssertUnmoved;
     use std::{
         pin::Pin,
         task::{Context, Poll},
     };
+
     use tokio1_crate::io;
+
+    use super::AssertUnmoved;
 
     impl<R: io::AsyncRead> io::AsyncRead for AssertUnmoved<R> {
         fn poll_read(

@@ -1,6 +1,7 @@
+use std::{future::Future, pin::Pin, task::Context};
+
 use assert_unmoved::AssertUnmoved;
 use futures_util::{future::pending, task::noop_waker};
-use std::{future::Future, pin::Pin, task::Context};
 
 #[test]
 fn dont_panic_when_not_polled() {

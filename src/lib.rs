@@ -117,15 +117,17 @@ pub use crate::assert_unmoved::AssertUnmoved;
 
 #[cfg(test)]
 mod tests {
-    use crate::*;
+    use std::{future::Future, pin::Pin};
+
     use static_assertions::{
         assert_impl_all as assert_impl, assert_not_impl_all as assert_not_impl,
     };
-    use std::{future::Future, pin::Pin};
+
+    use crate::*;
 
     assert_impl!(AssertUnmoved<()>: Send);
-    assert_impl!(AssertUnmoved<()>: Sync);
     assert_not_impl!(AssertUnmoved<*const ()>: Send);
+    assert_impl!(AssertUnmoved<()>: Sync);
     assert_not_impl!(AssertUnmoved<*const ()>: Sync);
     assert_impl!(*const (): Unpin);
     assert_not_impl!(AssertUnmoved<()>: Unpin);
