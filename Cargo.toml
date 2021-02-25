@@ -30,7 +30,7 @@ tokio03 = ["tokio03-crate"]
 # Implements tokio v0.2 traits for assert-unmoved types.
 tokio02 = ["tokio02-crate", "bytes05"]
 
-# NB: futures-*, tokio, and bytes are public dependencies.
+# Note: futures-*, tokio, and bytes are public dependencies.
 [dependencies]
 pin-project = "1"
 
