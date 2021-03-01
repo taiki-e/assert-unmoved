@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: daily
     commit-message:
-      prefix: ""
+      prefix: ''
     ignore:
       - dependency-name: bytes
       - dependency-name: tokio
@@ -15,5 +15,5 @@ updates:
     schedule:
       interval: daily
     commit-message:
-      prefix: ""
+      prefix: ''
     labels: []
