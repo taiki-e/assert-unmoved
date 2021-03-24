@@ -8,7 +8,7 @@ repository = "https://github.com/taiki-e/assert-unmoved"
 documentation = "https://docs.rs/assert-unmoved"
 keywords = ["assert", "pin"]
 categories = ["development-tools::testing"]
-exclude = ["/.*", "/scripts"]
+exclude = ["/.*", "/tools"]
 description = """
 A type that asserts that the underlying type is not moved after being pinned
 and mutably accessed.
