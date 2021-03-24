@@ -1,6 +1,6 @@
 use std::{
     future::Future,
-    ops::Deref,
+    ops,
     pin::Pin,
     ptr,
     task::{Context, Poll},
@@ -110,7 +110,7 @@ impl<T> PinnedDrop for AssertUnmoved<T> {
     }
 }
 
-impl<T> Deref for AssertUnmoved<T> {
+impl<T> ops::Deref for AssertUnmoved<T> {
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
