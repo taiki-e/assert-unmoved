@@ -36,7 +36,7 @@ impl<T> AssertUnmoved<T> {
     ///
     /// Unlike [`get_mut`](AssertUnmoved::get_mut) method, this method can always called.
     ///
-    /// You can also access the underlying type via [`Deref`] impl.
+    /// You can also access the underlying type via [`Deref`](std::ops::Deref) impl.
     pub const fn get_ref(&self) -> &T {
         &self.inner
     }
