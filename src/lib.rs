@@ -108,74 +108,16 @@
         allow(dead_code, unused_variables)
     )
 ))]
-#![warn(future_incompatible, rust_2018_idioms, single_use_lifetimes, unreachable_pub)]
-#![warn(missing_debug_implementations, missing_docs)]
-#![warn(clippy::default_trait_access)]
+#![warn(
+    future_incompatible,
+    missing_debug_implementations,
+    missing_docs,
+    rust_2018_idioms,
+    single_use_lifetimes,
+    unreachable_pub
+)]
+#![warn(clippy::default_trait_access, clippy::wildcard_imports)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod assert_unmoved;
 pub use crate::assert_unmoved::AssertUnmoved;
-
-#[cfg(test)]
-mod tests {
-    use std::{future::Future, pin::Pin};
-
-    use static_assertions::{
-        assert_impl_all as assert_impl, assert_not_impl_all as assert_not_impl,
-    };
-
-    use crate::*;
-
-    assert_impl!(AssertUnmoved<()>: Send);
-    assert_not_impl!(AssertUnmoved<*const ()>: Send);
-    assert_impl!(AssertUnmoved<()>: Sync);
-    assert_not_impl!(AssertUnmoved<*const ()>: Sync);
-    assert_impl!(*const (): Unpin);
-    assert_not_impl!(AssertUnmoved<()>: Unpin);
-
-    assert_impl!(AssertUnmoved<Pin<Box<dyn Future<Output = ()>>>>: Future<Output = ()>);
-
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_core::FusedFuture<Output = ()>>>>: futures_core::FusedFuture<Output = ()>);
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_core::Stream<Item = ()>>>>: futures_core::Stream<Item = ()>);
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_core::FusedStream<Item = ()>>>>: futures_core::FusedStream<Item = ()>);
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_sink::Sink<(), Error = ()>>>>: futures_sink::Sink<(), Error = ()>);
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncRead>>>: futures_io::AsyncRead);
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncWrite>>>: futures_io::AsyncWrite);
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncSeek>>>: futures_io::AsyncSeek);
-    #[cfg(feature = "futures03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncBufRead>>>: futures_io::AsyncBufRead);
-
-    #[cfg(feature = "tokio02")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncRead>>>: tokio02_crate::io::AsyncRead);
-    #[cfg(feature = "tokio02")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncWrite>>>: tokio02_crate::io::AsyncWrite);
-    #[cfg(feature = "tokio02")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncSeek>>>: tokio02_crate::io::AsyncSeek);
-    #[cfg(feature = "tokio02")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02_crate::io::AsyncBufRead>>>: tokio02_crate::io::AsyncBufRead);
-
-    #[cfg(feature = "tokio03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncRead>>>: tokio03_crate::io::AsyncRead);
-    #[cfg(feature = "tokio03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncWrite>>>: tokio03_crate::io::AsyncWrite);
-    #[cfg(feature = "tokio03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncSeek>>>: tokio03_crate::io::AsyncSeek);
-    #[cfg(feature = "tokio03")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03_crate::io::AsyncBufRead>>>: tokio03_crate::io::AsyncBufRead);
-
-    #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncRead>>>: tokio1_crate::io::AsyncRead);
-    #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncWrite>>>: tokio1_crate::io::AsyncWrite);
-    #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncSeek>>>: tokio1_crate::io::AsyncSeek);
-    #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncBufRead>>>: tokio1_crate::io::AsyncBufRead);
-}
