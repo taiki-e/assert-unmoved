@@ -261,7 +261,7 @@ mod futures03 {
         }
 
         fn consume(self: Pin<&mut Self>, amt: usize) {
-            self.get_pin_mut().consume(amt)
+            self.get_pin_mut().consume(amt);
         }
     }
 }
@@ -355,7 +355,7 @@ mod tokio02 {
         }
 
         fn consume(self: Pin<&mut Self>, amt: usize) {
-            self.get_pin_mut().consume(amt)
+            self.get_pin_mut().consume(amt);
         }
     }
 }
@@ -416,7 +416,7 @@ mod tokio03 {
         }
 
         fn consume(self: Pin<&mut Self>, amt: usize) {
-            self.get_pin_mut().consume(amt)
+            self.get_pin_mut().consume(amt);
         }
     }
 }
@@ -489,7 +489,7 @@ mod tokio1 {
         }
 
         fn consume(self: Pin<&mut Self>, amt: usize) {
-            self.get_pin_mut().consume(amt)
+            self.get_pin_mut().consume(amt);
         }
     }
 }
