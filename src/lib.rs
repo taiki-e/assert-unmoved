@@ -87,10 +87,10 @@
 //!
 //! # Optional features
 //!
-//! * **`futures03`** — Implements [futures v0.3][futures03] traits for assert-unmoved types.
-//! * **`tokio1`** — Implements [tokio v1][tokio1] traits for assert-unmoved types.
-//! * **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
-//! * **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
+//! - **`futures03`** — Implements [futures v0.3][futures03] traits for assert-unmoved types.
+//! - **`tokio1`** — Implements [tokio v1][tokio1] traits for assert-unmoved types.
+//! - **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
+//! - **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
 //!
 //! [`Pin::new_unchecked`]: std::pin::Pin::new_unchecked
 //! [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
