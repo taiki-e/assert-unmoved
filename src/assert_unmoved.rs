@@ -283,7 +283,8 @@ mod tokio02 {
 
     impl<R: AsyncRead> AsyncRead for AssertUnmoved<R> {
         unsafe fn prepare_uninitialized_buffer(&self, buf: &mut [MaybeUninit<u8>]) -> bool {
-            self.get_ref().prepare_uninitialized_buffer(buf)
+            // SAFETY: The safety contract must be upheld by the caller.
+            unsafe { self.get_ref().prepare_uninitialized_buffer(buf) }
         }
 
         fn poll_read(
