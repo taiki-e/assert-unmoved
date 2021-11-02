@@ -9,12 +9,13 @@
 //! An example of detecting incorrect [`Pin::new_unchecked`] use (**should panic**):
 //!
 //! ```rust,should_panic
+//! use std::pin::Pin;
+//!
+//! use assert_unmoved::AssertUnmoved;
 //! use futures_util::{
 //!     future::{self, Future},
 //!     task::{noop_waker, Context},
 //! };
-//! use assert_unmoved::AssertUnmoved;
-//! use std::pin::Pin;
 //!
 //! let waker = noop_waker();
 //! let mut cx = Context::from_waker(&waker);
@@ -38,13 +39,14 @@
 //! # fn main() { unimplemented!() }
 //! # #[cfg(feature = "futures03")]
 //! # fn main() {
+//! use std::pin::Pin;
+//!
+//! use assert_unmoved::AssertUnmoved;
 //! use futures_util::{
 //!     future::Future,
 //!     stream::{self, Stream},
 //!     task::{noop_waker, Context, Poll},
 //! };
-//! use assert_unmoved::AssertUnmoved;
-//! use std::pin::Pin;
 //!
 //! struct Next<'a, S: Stream>(&'a mut S);
 //!

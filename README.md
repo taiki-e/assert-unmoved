@@ -31,12 +31,13 @@ assert-unmoved = "0.1"
 An example of using [`Pin::new_unchecked`] incorrectly (**should panic**):
 
 ```rust
+use std::pin::Pin;
+
+use assert_unmoved::AssertUnmoved;
 use futures_util::{
     future::{self, Future},
     task::{noop_waker, Context},
 };
-use assert_unmoved::AssertUnmoved;
-use std::pin::Pin;
 
 let waker = noop_waker();
 let mut cx = Context::from_waker(&waker);
@@ -56,13 +57,14 @@ let _ = pinned_boxed_future.poll(&mut cx).is_pending();
 An example of incorrect [`StreamExt::next`] implementation (**should panic**):
 
 ```rust
+use std::pin::Pin;
+
+use assert_unmoved::AssertUnmoved;
 use futures_util::{
     future::Future,
     stream::{self, Stream},
     task::{noop_waker, Context, Poll},
 };
-use assert_unmoved::AssertUnmoved;
-use std::pin::Pin;
 
 struct Next<'a, S: Stream>(&'a mut S);
 
