@@ -10,6 +10,10 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+- Use `#[track_caller]`.
+
+  **NOTE:** This raises the minimum supported Rust version of this crate from Rust 1.37 to Rust 1.46.
+
 ## [0.1.3] - 2021-04-06
 
 - [Apply `doc(cfg(...))` on feature gated APIs.](https://github.com/taiki-e/assert-unmoved/pull/3)

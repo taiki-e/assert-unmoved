@@ -22,7 +22,7 @@ pub struct AssertUnmoved<T> {
     this_ptr: *const Self,
 }
 
-// Safety: Safe due to `this_ptr`'s invariant.
+// SAFETY: Safe due to `this_ptr`'s invariant.
 unsafe impl<T: Send> Send for AssertUnmoved<T> {}
 unsafe impl<T: Sync> Sync for AssertUnmoved<T> {}
 
@@ -83,6 +83,7 @@ impl<T> AssertUnmoved<T> {
     /// ```
     ///
     /// [`Stream`]: https://docs.rs/futures/0.3/futures/stream/trait.Stream.html
+    #[track_caller]
     pub fn get_pin_mut(mut self: Pin<&mut Self>) -> Pin<&mut T> {
         let cur_this = &*self as *const Self;
         if self.this_ptr.is_null() {
@@ -139,6 +140,7 @@ impl<T: Default> Default for AssertUnmoved<T> {
 impl<F: Future> Future for AssertUnmoved<F> {
     type Output = F::Output;
 
+    #[track_caller]
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         self.get_pin_mut().poll(cx)
     }
@@ -170,8 +172,13 @@ mod futures03 {
     impl<S: Stream> Stream for AssertUnmoved<S> {
         type Item = S::Item;
 
+        #[track_caller]
         fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
             self.get_pin_mut().poll_next(cx)
+        }
+
+        fn size_hint(&self) -> (usize, Option<usize>) {
+            self.get_ref().size_hint()
         }
     }
 
@@ -184,24 +191,29 @@ mod futures03 {
     impl<S: Sink<Item>, Item> Sink<Item> for AssertUnmoved<S> {
         type Error = S::Error;
 
+        #[track_caller]
         fn poll_ready(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
             self.get_pin_mut().poll_ready(cx)
         }
 
+        #[track_caller]
         fn start_send(self: Pin<&mut Self>, item: Item) -> Result<(), Self::Error> {
             self.get_pin_mut().start_send(item)
         }
 
+        #[track_caller]
         fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
             self.get_pin_mut().poll_flush(cx)
         }
 
+        #[track_caller]
         fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
             self.get_pin_mut().poll_close(cx)
         }
     }
 
     impl<R: io::AsyncRead> io::AsyncRead for AssertUnmoved<R> {
+        #[track_caller]
         fn poll_read(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -210,6 +222,7 @@ mod futures03 {
             self.get_pin_mut().poll_read(cx, buf)
         }
 
+        #[track_caller]
         fn poll_read_vectored(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -220,6 +233,7 @@ mod futures03 {
     }
 
     impl<W: io::AsyncWrite> io::AsyncWrite for AssertUnmoved<W> {
+        #[track_caller]
         fn poll_write(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -228,6 +242,7 @@ mod futures03 {
             self.get_pin_mut().poll_write(cx, buf)
         }
 
+        #[track_caller]
         fn poll_write_vectored(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -236,16 +251,19 @@ mod futures03 {
             self.get_pin_mut().poll_write_vectored(cx, bufs)
         }
 
+        #[track_caller]
         fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_flush(cx)
         }
 
+        #[track_caller]
         fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_close(cx)
         }
     }
 
     impl<S: io::AsyncSeek> io::AsyncSeek for AssertUnmoved<S> {
+        #[track_caller]
         fn poll_seek(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -256,10 +274,12 @@ mod futures03 {
     }
 
     impl<R: io::AsyncBufRead> io::AsyncBufRead for AssertUnmoved<R> {
+        #[track_caller]
         fn poll_fill_buf(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<&[u8]>> {
             self.get_pin_mut().poll_fill_buf(cx)
         }
 
+        #[track_caller]
         fn consume(self: Pin<&mut Self>, amt: usize) {
             self.get_pin_mut().consume(amt);
         }
@@ -287,6 +307,7 @@ mod tokio02 {
             unsafe { self.get_ref().prepare_uninitialized_buffer(buf) }
         }
 
+        #[track_caller]
         fn poll_read(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -295,6 +316,7 @@ mod tokio02 {
             self.get_pin_mut().poll_read(cx, buf)
         }
 
+        #[track_caller]
         fn poll_read_buf<B: BufMut>(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -308,6 +330,7 @@ mod tokio02 {
     }
 
     impl<W: AsyncWrite> AsyncWrite for AssertUnmoved<W> {
+        #[track_caller]
         fn poll_write(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -316,14 +339,17 @@ mod tokio02 {
             self.get_pin_mut().poll_write(cx, buf)
         }
 
+        #[track_caller]
         fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_flush(cx)
         }
 
+        #[track_caller]
         fn poll_shutdown(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_shutdown(cx)
         }
 
+        #[track_caller]
         fn poll_write_buf<B: Buf>(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -337,6 +363,7 @@ mod tokio02 {
     }
 
     impl<S: AsyncSeek> AsyncSeek for AssertUnmoved<S> {
+        #[track_caller]
         fn start_seek(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -345,16 +372,19 @@ mod tokio02 {
             self.get_pin_mut().start_seek(cx, pos)
         }
 
+        #[track_caller]
         fn poll_complete(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<u64>> {
             self.get_pin_mut().poll_complete(cx)
         }
     }
 
     impl<R: AsyncBufRead> AsyncBufRead for AssertUnmoved<R> {
+        #[track_caller]
         fn poll_fill_buf(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<&[u8]>> {
             self.get_pin_mut().poll_fill_buf(cx)
         }
 
+        #[track_caller]
         fn consume(self: Pin<&mut Self>, amt: usize) {
             self.get_pin_mut().consume(amt);
         }
@@ -374,6 +404,7 @@ mod tokio03 {
     use super::AssertUnmoved;
 
     impl<R: io::AsyncRead> io::AsyncRead for AssertUnmoved<R> {
+        #[track_caller]
         fn poll_read(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -384,6 +415,7 @@ mod tokio03 {
     }
 
     impl<W: io::AsyncWrite> io::AsyncWrite for AssertUnmoved<W> {
+        #[track_caller]
         fn poll_write(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -392,30 +424,36 @@ mod tokio03 {
             self.get_pin_mut().poll_write(cx, buf)
         }
 
+        #[track_caller]
         fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_flush(cx)
         }
 
+        #[track_caller]
         fn poll_shutdown(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_shutdown(cx)
         }
     }
 
     impl<S: io::AsyncSeek> io::AsyncSeek for AssertUnmoved<S> {
+        #[track_caller]
         fn start_seek(self: Pin<&mut Self>, pos: io::SeekFrom) -> io::Result<()> {
             self.get_pin_mut().start_seek(pos)
         }
 
+        #[track_caller]
         fn poll_complete(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<u64>> {
             self.get_pin_mut().poll_complete(cx)
         }
     }
 
     impl<R: io::AsyncBufRead> io::AsyncBufRead for AssertUnmoved<R> {
+        #[track_caller]
         fn poll_fill_buf(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<&[u8]>> {
             self.get_pin_mut().poll_fill_buf(cx)
         }
 
+        #[track_caller]
         fn consume(self: Pin<&mut Self>, amt: usize) {
             self.get_pin_mut().consume(amt);
         }
@@ -435,6 +473,7 @@ mod tokio1 {
     use super::AssertUnmoved;
 
     impl<R: io::AsyncRead> io::AsyncRead for AssertUnmoved<R> {
+        #[track_caller]
         fn poll_read(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -445,6 +484,7 @@ mod tokio1 {
     }
 
     impl<W: io::AsyncWrite> io::AsyncWrite for AssertUnmoved<W> {
+        #[track_caller]
         fn poll_write(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -453,14 +493,17 @@ mod tokio1 {
             self.get_pin_mut().poll_write(cx, buf)
         }
 
+        #[track_caller]
         fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_flush(cx)
         }
 
+        #[track_caller]
         fn poll_shutdown(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
             self.get_pin_mut().poll_shutdown(cx)
         }
 
+        #[track_caller]
         fn poll_write_vectored(
             self: Pin<&mut Self>,
             cx: &mut Context<'_>,
@@ -475,20 +518,24 @@ mod tokio1 {
     }
 
     impl<S: io::AsyncSeek> io::AsyncSeek for AssertUnmoved<S> {
+        #[track_caller]
         fn start_seek(self: Pin<&mut Self>, pos: io::SeekFrom) -> io::Result<()> {
             self.get_pin_mut().start_seek(pos)
         }
 
+        #[track_caller]
         fn poll_complete(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<u64>> {
             self.get_pin_mut().poll_complete(cx)
         }
     }
 
     impl<R: io::AsyncBufRead> io::AsyncBufRead for AssertUnmoved<R> {
+        #[track_caller]
         fn poll_fill_buf(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<&[u8]>> {
             self.get_pin_mut().poll_fill_buf(cx)
         }
 
+        #[track_caller]
         fn consume(self: Pin<&mut Self>, amt: usize) {
             self.get_pin_mut().consume(amt);
         }
