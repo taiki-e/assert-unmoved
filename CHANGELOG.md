@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+## [0.1.4] - 2022-02-06
+
 - Use `#[track_caller]`.
 
   **NOTE:** This raises the minimum supported Rust version of this crate from Rust 1.37 to Rust 1.46.
@@ -32,7 +34,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 Initial release
 
-[Unreleased]: https://github.com/taiki-e/assert-unmoved/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/taiki-e/assert-unmoved/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/taiki-e/assert-unmoved/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/taiki-e/assert-unmoved/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/taiki-e/assert-unmoved/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/taiki-e/assert-unmoved/compare/v0.1.0...v0.1.1
