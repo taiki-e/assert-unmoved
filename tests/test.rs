@@ -48,6 +48,20 @@ fn moved_before_drop() {
     unsafe { x.map_unchecked_mut(|x| &mut x.0) }.as_pin_mut().unwrap().get_pin_mut();
 }
 
+#[test]
+#[should_panic(expected = "AssertUnmoved moved after get_pin_mut call")]
+fn misuse_get_mut() {
+    let waker = noop_waker();
+    let mut cx = Context::from_waker(&waker);
+
+    let mut future = AssertUnmoved::new(pending::<()>());
+    let pinned_future = unsafe { Pin::new_unchecked(&mut future) };
+    assert!(pinned_future.poll(&mut cx).is_pending());
+
+    let mut future = Box::new(future);
+    let _ = future.get_mut();
+}
+
 pub mod assert_impl {
     use std::{future::Future, pin::Pin};
 

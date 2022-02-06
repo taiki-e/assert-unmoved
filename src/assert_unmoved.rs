@@ -45,7 +45,12 @@ impl<T> AssertUnmoved<T> {
     ///
     /// Note that this method can only be called before pinned since
     /// `AssertUnmoved` is `!Unpin` (this is guaranteed by the type system!).
+    #[track_caller]
     pub fn get_mut(&mut self) -> &mut T {
+        if !self.this_ptr.is_null() {
+            let cur_this = &*self as *const Self;
+            assert_eq!(self.this_ptr, cur_this, "AssertUnmoved moved after get_pin_mut call");
+        }
         &mut self.inner
     }
 
