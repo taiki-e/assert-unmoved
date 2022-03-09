@@ -14,7 +14,7 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 - Use `#[track_caller]`.
 
-  **NOTE:** This raises the minimum supported Rust version of this crate from Rust 1.37 to Rust 1.46.
+  **Note:** This raises the minimum supported Rust version of this crate from Rust 1.37 to Rust 1.46.
 
 - Detect misuse of `AssertUnmoved::get_mut`.
 

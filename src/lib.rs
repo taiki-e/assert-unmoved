@@ -119,7 +119,13 @@
 )]
 #![cfg_attr(test, warn(unsafe_op_in_unsafe_fn))] // unsafe_op_in_unsafe_fn requires Rust 1.52
 #![cfg_attr(not(test), allow(unused_unsafe))]
-#![warn(clippy::default_trait_access, clippy::wildcard_imports)]
+#![warn(
+    clippy::default_trait_access,
+    clippy::exhaustive_enums,
+    clippy::exhaustive_structs,
+    clippy::undocumented_unsafe_blocks,
+    clippy::wildcard_imports
+)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod assert_unmoved;
