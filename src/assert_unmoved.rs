@@ -24,6 +24,7 @@ pub struct AssertUnmoved<T> {
 
 // SAFETY: Safe due to `this_ptr`'s invariant.
 unsafe impl<T: Send> Send for AssertUnmoved<T> {}
+// SAFETY: Safe due to `this_ptr`'s invariant.
 unsafe impl<T: Sync> Sync for AssertUnmoved<T> {}
 
 impl<T> AssertUnmoved<T> {
