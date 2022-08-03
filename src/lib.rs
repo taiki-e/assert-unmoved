@@ -120,10 +120,18 @@
 #![cfg_attr(test, warn(unsafe_op_in_unsafe_fn))] // unsafe_op_in_unsafe_fn requires Rust 1.52
 #![cfg_attr(not(test), allow(unused_unsafe))]
 #![warn(
+    clippy::pedantic,
+    // lints for public library
+    clippy::alloc_instead_of_core,
     clippy::exhaustive_enums,
     clippy::exhaustive_structs,
-    clippy::pedantic,
-    clippy::undocumented_unsafe_blocks
+    clippy::std_instead_of_alloc,
+    clippy::std_instead_of_core,
+    // lints that help writing unsafe code
+    clippy::default_union_representation,
+    clippy::trailing_empty_array,
+    clippy::transmute_undefined_repr,
+    clippy::undocumented_unsafe_blocks,
 )]
 #![allow(clippy::must_use_candidate)]
 #![cfg_attr(docsrs, feature(doc_cfg))]

@@ -1,11 +1,11 @@
-use std::{
+use core::{
     future::Future,
     ops,
     pin::Pin,
     ptr,
     task::{Context, Poll},
-    thread,
 };
+use std::thread;
 
 use pin_project::{pin_project, pinned_drop};
 
@@ -159,7 +159,7 @@ impl<F: Future> Future for AssertUnmoved<F> {
 #[cfg(feature = "futures03")]
 #[cfg_attr(docsrs, doc(cfg(feature = "futures03")))]
 mod futures03 {
-    use std::{
+    use core::{
         pin::Pin,
         task::{Context, Poll},
     };
@@ -299,12 +299,12 @@ mod futures03 {
 #[cfg(feature = "tokio02")]
 #[cfg_attr(docsrs, doc(cfg(feature = "tokio02")))]
 mod tokio02 {
-    use std::{
-        io,
+    use core::{
         mem::MaybeUninit,
         pin::Pin,
         task::{Context, Poll},
     };
+    use std::io;
 
     use bytes05::{Buf, BufMut};
     use tokio02_crate::io::{AsyncBufRead, AsyncRead, AsyncSeek, AsyncWrite};
@@ -404,7 +404,7 @@ mod tokio02 {
 #[cfg(feature = "tokio03")]
 #[cfg_attr(docsrs, doc(cfg(feature = "tokio03")))]
 mod tokio03 {
-    use std::{
+    use core::{
         pin::Pin,
         task::{Context, Poll},
     };
@@ -473,7 +473,7 @@ mod tokio03 {
 #[cfg(feature = "tokio1")]
 #[cfg_attr(docsrs, doc(cfg(feature = "tokio1")))]
 mod tokio1 {
-    use std::{
+    use core::{
         pin::Pin,
         task::{Context, Poll},
     };
