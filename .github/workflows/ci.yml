@@ -69,7 +69,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@nightly
-      - run: cargo doc --workspace --all-features
+      - run: cargo doc --workspace --all-features --document-private-items
         env:
           RUSTDOCFLAGS: ${{ env.RUSTDOCFLAGS }} --cfg docsrs
 
