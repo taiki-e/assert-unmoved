@@ -1,6 +1,7 @@
 use core::{
     future::Future,
     ops,
+    panic::Location,
     pin::Pin,
     ptr,
     task::{Context, Poll},
@@ -20,6 +21,7 @@ pub struct AssertUnmoved<T> {
     inner: T,
     // Invariant: The pointer is never dereferenced.
     this_ptr: *const Self,
+    first_pinned_mutably_accessed_at: Option<&'static Location<'static>>,
 }
 
 // SAFETY: Safe due to `this_ptr`'s invariant.
@@ -30,7 +32,7 @@ unsafe impl<T: Sync> Sync for AssertUnmoved<T> {}
 impl<T> AssertUnmoved<T> {
     /// Creates a new `AssertUnmoved`.
     pub const fn new(inner: T) -> Self {
-        Self { inner, this_ptr: ptr::null() }
+        Self { inner, this_ptr: ptr::null(), first_pinned_mutably_accessed_at: None }
     }
 
     /// Gets a reference to the underlying type.
@@ -54,7 +56,13 @@ impl<T> AssertUnmoved<T> {
     pub fn get_mut(&mut self) -> &mut T {
         if !self.this_ptr.is_null() {
             let cur_this = &*self as *const Self;
-            assert_eq!(self.this_ptr, cur_this, "AssertUnmoved moved after get_pin_mut call");
+            assert_eq!(
+                self.this_ptr,
+                cur_this,
+                "AssertUnmoved moved after get_pin_mut call\n\
+                 \tfirst pinned mutably accessed at {}\n",
+                self.first_pinned_mutably_accessed_at.unwrap()
+            );
         }
         &mut self.inner
     }
@@ -99,8 +107,15 @@ impl<T> AssertUnmoved<T> {
         if self.this_ptr.is_null() {
             // First time being pinned and mutably accessed.
             *self.as_mut().project().this_ptr = cur_this;
+            *self.as_mut().project().first_pinned_mutably_accessed_at = Some(Location::caller());
         } else {
-            assert_eq!(self.this_ptr, cur_this, "AssertUnmoved moved between get_pin_mut calls");
+            assert_eq!(
+                self.this_ptr,
+                cur_this,
+                "AssertUnmoved moved between get_pin_mut calls\n\
+                 \tfirst pinned mutably accessed at {}\n",
+                self.first_pinned_mutably_accessed_at.unwrap()
+            );
         }
         self.project().inner
     }
@@ -116,7 +131,13 @@ impl<T> PinnedDrop for AssertUnmoved<T> {
         // cause the process to be aborted.
         if !thread::panicking() && !self.this_ptr.is_null() {
             let cur_this = &*self as *const Self;
-            assert_eq!(self.this_ptr, cur_this, "AssertUnmoved moved before drop");
+            assert_eq!(
+                self.this_ptr,
+                cur_this,
+                "AssertUnmoved moved before drop\n\
+                 \tfirst pinned mutably accessed at {}\n",
+                self.first_pinned_mutably_accessed_at.unwrap()
+            );
         }
     }
 }
