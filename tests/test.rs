@@ -48,6 +48,7 @@ fn moved_before_drop() {
     unsafe { x.map_unchecked_mut(|x| &mut x.0) }.as_pin_mut().unwrap().get_pin_mut();
 }
 
+#[allow(clippy::let_underscore_future)]
 #[test]
 #[should_panic(expected = "AssertUnmoved moved after get_pin_mut call")]
 fn misuse_get_mut() {
