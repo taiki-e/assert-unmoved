@@ -12,7 +12,7 @@ ignore = [
 # https://embarkstudios.github.io/cargo-deny/checks/bans/cfg.html
 [bans]
 multiple-versions = "deny"
-wildcards = "deny"
+wildcards = "allow" # https://github.com/EmbarkStudios/cargo-deny/issues/448
 skip = [
     { name = "pin-project-lite", version = "0.1" }, # from tokio 0.2
     { name = "tokio", version = "0.2" }, # optional deps
