@@ -4,11 +4,26 @@ vulnerability = "deny"
 unmaintained = "deny"
 yanked = "deny"
 notice = "deny"
-ignore = []
+ignore = [
+    "RUSTSEC-2021-0124", # tokio 0.2/0.3 (optional deps)
+    "RUSTSEC-2021-0072", # tokio 0.3 (optional deps)
+]
+
+# https://embarkstudios.github.io/cargo-deny/checks/bans/cfg.html
+[bans]
+multiple-versions = "deny"
+wildcards = "deny"
+skip = [
+    { name = "pin-project-lite", version = "0.1" }, # from tokio 0.2
+    { name = "tokio", version = "0.2" }, # optional deps
+    { name = "tokio", version = "0.3" }, # optional deps
+]
 
 # https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html
 [licenses]
 default = "deny"
+unlicensed = "deny"
+copyleft = "deny"
 unused-allowed-license = "deny"
 private.ignore = true
 allow = [
@@ -16,3 +31,9 @@ allow = [
     "MIT",
     "Unicode-DFS-2016", # unicode-ident
 ]
+
+# https://embarkstudios.github.io/cargo-deny/checks/sources/cfg.html
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-git = []
