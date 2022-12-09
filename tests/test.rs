@@ -4,7 +4,7 @@ use assert_unmoved::AssertUnmoved;
 use futures_util::{future::pending, task::noop_waker};
 
 #[test]
-fn dont_panic_when_not_polled() {
+fn do_not_panic_when_not_polled() {
     // This shouldn't panic.
     let future = AssertUnmoved::new(pending::<()>());
     drop(future);
@@ -12,7 +12,7 @@ fn dont_panic_when_not_polled() {
 
 #[test]
 #[should_panic(expected = "AssertUnmoved moved between get_pin_mut calls")]
-fn dont_double_panic() {
+fn do_not_double_panic() {
     // This test should only panic, not abort the process.
     let waker = noop_waker();
     let mut cx = Context::from_waker(&waker);
