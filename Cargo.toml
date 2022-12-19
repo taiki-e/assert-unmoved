@@ -20,6 +20,9 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [workspace]
 
+[lib]
+doc-scrape-examples = false
+
 [features]
 # Implements futures v0.3 traits for assert-unmoved types.
 futures03 = ["futures-core", "futures-io", "futures-sink"]
