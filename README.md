@@ -28,7 +28,7 @@ assert-unmoved = "0.1"
 
 ## Examples
 
-An example of using [`Pin::new_unchecked`] incorrectly (**should panic**):
+An example of detecting incorrect [`Pin::new_unchecked`] use (**should panic**):
 
 ```rust
 use std::pin::Pin;
@@ -54,7 +54,7 @@ let pinned_boxed_future = unsafe { Pin::new_unchecked(&mut *boxed_future) };
 let _ = pinned_boxed_future.poll(&mut cx).is_pending();
 ```
 
-An example of incorrect [`StreamExt::next`] implementation (**should panic**):
+An example of detecting incorrect [`StreamExt::next`] implementation (**should panic**):
 
 ```rust
 use std::pin::Pin;
@@ -111,17 +111,10 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 - **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
 - **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
 
-## Related Projects
-
-- [pin-project]: A crate for safe and ergonomic pin-projection.
-- [pin-project-lite]: A lightweight version of pin-project written with declarative macros.
-
 [`Pin::new_unchecked`]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.new_unchecked
 [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
 [futures-test]: https://docs.rs/futures-test
 [futures03]: https://docs.rs/futures/0.3
-[pin-project-lite]: https://github.com/taiki-e/pin-project-lite
-[pin-project]: https://github.com/taiki-e/pin-project
 [pin]: https://doc.rust-lang.org/std/pin/index.html
 [rust-lang/futures-rs#2148]: https://github.com/rust-lang/futures-rs/pull/2148
 [rust-lang/futures-rs#2208]: https://github.com/rust-lang/futures-rs/pull/2208
