@@ -143,5 +143,9 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 #![allow(clippy::must_use_candidate)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[cfg(test)]
+#[path = "gen/assert_impl.rs"]
+mod assert_impl;
+
 mod assert_unmoved;
 pub use crate::assert_unmoved::AssertUnmoved;
