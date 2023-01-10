@@ -21,6 +21,8 @@ fn gen_assert_impl() -> Result<()> {
     const NOT_SEND: &[&str] = &[];
     const NOT_SYNC: &[&str] = &[];
     const NOT_UNPIN: &[&str] = &["assert_unmoved::AssertUnmoved"];
+    const NOT_UNWIND_SAFE: &[&str] = &[];
+    const NOT_REF_UNWIND_SAFE: &[&str] = &[];
 
     let workspace_root = &workspace_root();
     let out_dir = &workspace_root.join("src/gen");
@@ -41,41 +43,9 @@ fn gen_assert_impl() -> Result<()> {
         })
         .collect();
 
-    let mut tokens = quote! {
-        #[allow(unused_imports)]
-        use core::marker::PhantomPinned;
-        /// Send & !Sync
-        #[allow(dead_code)]
-        struct NotSync(core::cell::Cell<()>);
-        /// !Send & !Sync
-        #[allow(dead_code)]
-        struct NotSendSync(std::rc::Rc<()>);
-        #[allow(dead_code)]
-        fn assert_send<T: ?Sized + Send>() {}
-        #[allow(dead_code)]
-        fn assert_sync<T: ?Sized + Sync>() {}
-        #[allow(dead_code)]
-        fn assert_unpin<T: ?Sized + Unpin>() {}
-        #[allow(unused_macros)]
-        macro_rules! assert_not_send {
-            ($ty:ty) => {
-                static_assertions::assert_not_impl_all!($ty: Send);
-            };
-        }
-        #[allow(unused_macros)]
-        macro_rules! assert_not_sync {
-            ($ty:ty) => {
-                static_assertions::assert_not_impl_all!($ty: Sync);
-            };
-        }
-        #[allow(unused_macros)]
-        macro_rules! assert_not_unpin {
-            ($ty:ty) => {
-                static_assertions::assert_not_impl_all!($ty: Unpin);
-            };
-        }
-    };
+    let mut tokens = quote! {};
     let mut visited_types = BTreeSet::new();
+    let mut use_macros = false;
     for f in &files {
         let s = fs::read_to_string(f)?;
         let mut ast = syn::parse_file(&s)?;
@@ -109,6 +79,7 @@ fn gen_assert_impl() -> Result<()> {
 
                 let lt = generics.lifetimes().map(|_| quote! { '_ }).collect::<Vec<_>>();
                 if has_generics {
+                    use_macros = true;
                     // Send & Sync & Unpin
                     let unit = generics.type_params().map(|_| quote! { () }).collect::<Vec<_>>();
                     let unit_generics = quote! { <#(#lt,)* #(#unit),*> };
@@ -126,6 +97,19 @@ fn gen_assert_impl() -> Result<()> {
                         .map(|_| quote! { PhantomPinned })
                         .collect::<Vec<_>>();
                     let not_unpin_generics = quote! { <#(#lt,)* #(#not_unpin),*> };
+                    // !UnwindSafe
+                    let not_unwind_safe = generics
+                        .type_params()
+                        .map(|_| quote! { NotUnwindSafe })
+                        .collect::<Vec<_>>();
+                    let not_unwind_safe_generics = quote! { <#(#lt,)* #(#not_unwind_safe),*> };
+                    // !RefUnwindSafe
+                    let not_ref_unwind_safe = generics
+                        .type_params()
+                        .map(|_| quote! { NotRefUnwindSafe })
+                        .collect::<Vec<_>>();
+                    let not_ref_unwind_safe_generics =
+                        quote! { <#(#lt,)* #(#not_ref_unwind_safe),*> };
                     if NOT_SEND.contains(&path_string.as_str()) {
                         tokens.extend(quote! {
                             assert_not_send!(crate:: #(#module::)* #ident #unit_generics);
@@ -158,6 +142,32 @@ fn gen_assert_impl() -> Result<()> {
                             assert_not_unpin!(crate:: #(#module::)* #ident #not_unpin_generics);
                         });
                     }
+                    if NOT_UNWIND_SAFE.contains(&path_string.as_str()) {
+                        tokens.extend(quote! {
+                            assert_not_unwind_safe!(crate:: #(#module::)* #ident #unit_generics);
+                        });
+                    } else {
+                        tokens.extend(quote! {
+                            assert_unwind_safe::<crate:: #(#module::)* #ident #unit_generics>();
+                            assert_not_unwind_safe!(
+                                crate:: #(#module::)* #ident #not_unwind_safe_generics
+                            );
+                        });
+                    }
+                    if NOT_REF_UNWIND_SAFE.contains(&path_string.as_str()) {
+                        tokens.extend(quote! {
+                            assert_not_ref_unwind_safe!(
+                                crate:: #(#module::)* #ident #unit_generics
+                            );
+                        });
+                    } else {
+                        tokens.extend(quote! {
+                            assert_ref_unwind_safe::<crate:: #(#module::)* #ident #unit_generics>();
+                            assert_not_ref_unwind_safe!(
+                                crate:: #(#module::)* #ident #not_ref_unwind_safe_generics
+                            );
+                        });
+                    }
                 } else {
                     let lt = if !lt.is_empty() {
                         quote! { <#(#lt),*> }
@@ -165,6 +175,7 @@ fn gen_assert_impl() -> Result<()> {
                         quote! {}
                     };
                     if NOT_SEND.contains(&path_string.as_str()) {
+                        use_macros = true;
                         tokens.extend(quote! {
                             assert_not_send!(crate:: #(#module::)* #ident #lt);
                         });
@@ -174,6 +185,7 @@ fn gen_assert_impl() -> Result<()> {
                         });
                     }
                     if NOT_SYNC.contains(&path_string.as_str()) {
+                        use_macros = true;
                         tokens.extend(quote! {
                             assert_not_sync!(crate:: #(#module::)* #ident #lt);
                         });
@@ -183,12 +195,33 @@ fn gen_assert_impl() -> Result<()> {
                         });
                     }
                     if NOT_UNPIN.contains(&path_string.as_str()) {
+                        use_macros = true;
                         tokens.extend(quote! {
                             assert_not_unpin!(crate:: #(#module::)* #ident #lt);
                         });
                     } else {
                         tokens.extend(quote! {
                             assert_unpin::<crate:: #(#module::)* #ident #lt>();
+                        });
+                    }
+                    if NOT_UNWIND_SAFE.contains(&path_string.as_str()) {
+                        use_macros = true;
+                        tokens.extend(quote! {
+                            assert_not_unwind_safe!(crate:: #(#module::)* #ident #lt);
+                        });
+                    } else {
+                        tokens.extend(quote! {
+                            assert_unwind_safe::<crate:: #(#module::)* #ident #lt>();
+                        });
+                    }
+                    if NOT_REF_UNWIND_SAFE.contains(&path_string.as_str()) {
+                        use_macros = true;
+                        tokens.extend(quote! {
+                            assert_not_ref_unwind_safe!(crate:: #(#module::)* #ident #lt);
+                        });
+                    } else {
+                        tokens.extend(quote! {
+                            assert_ref_unwind_safe::<crate:: #(#module::)* #ident #lt>();
                         });
                     }
                 };
@@ -207,13 +240,87 @@ fn gen_assert_impl() -> Result<()> {
     for &t in NOT_UNPIN {
         assert!(visited_types.contains(t), "unknown type `{}` specified in NOT_UNPIN constant", t);
     }
+    for &t in NOT_UNWIND_SAFE {
+        assert!(
+            visited_types.contains(t),
+            "unknown type `{}` specified in NOT_UNWIND_SAFE constant",
+            t
+        );
+    }
+    for &t in NOT_REF_UNWIND_SAFE {
+        assert!(
+            visited_types.contains(t),
+            "unknown type `{}` specified in NOT_REF_UNWIND_SAFE constant",
+            t
+        );
+    }
 
-    let out = quote! {
-        #[allow(clippy::std_instead_of_alloc)]
+    let mut out = quote! {
+        #![allow(clippy::std_instead_of_alloc, clippy::std_instead_of_core)]
+        #[allow(unused_imports)]
+        use core::marker::PhantomPinned;
+        /// `Send` & `!Sync`
+        #[allow(dead_code)]
+        struct NotSync(core::cell::Cell<()>);
+        /// `!Send` & `!Sync`
+        #[allow(dead_code)]
+        struct NotSendSync(std::rc::Rc<()>);
+        /// `!UnwindSafe`
+        #[allow(dead_code)]
+        struct NotUnwindSafe(&'static mut ());
+        /// `!RefUnwindSafe`
+        #[allow(dead_code)]
+        struct NotRefUnwindSafe(core::cell::UnsafeCell<()>);
+        #[allow(dead_code)]
+        fn assert_send<T: ?Sized + Send>() {}
+        #[allow(dead_code)]
+        fn assert_sync<T: ?Sized + Sync>() {}
+        #[allow(dead_code)]
+        fn assert_unpin<T: ?Sized + Unpin>() {}
+        #[allow(dead_code)]
+        fn assert_unwind_safe<T: ?Sized + std::panic::UnwindSafe>() {}
+        #[allow(dead_code)]
+        fn assert_ref_unwind_safe<T: ?Sized + std::panic::RefUnwindSafe>() {}
+    };
+    if use_macros {
+        out.extend(quote! {
+            #[allow(unused_macros)]
+            macro_rules! assert_not_send {
+                ($ty:ty) => {
+                    static_assertions::assert_not_impl_all!($ty: Send);
+                };
+            }
+            #[allow(unused_macros)]
+            macro_rules! assert_not_sync {
+                ($ty:ty) => {
+                    static_assertions::assert_not_impl_all!($ty: Sync);
+                };
+            }
+            #[allow(unused_macros)]
+            macro_rules! assert_not_unpin {
+                ($ty:ty) => {
+                    static_assertions::assert_not_impl_all!($ty: Unpin);
+                };
+            }
+            #[allow(unused_macros)]
+            macro_rules! assert_not_unwind_safe {
+                ($ty:ty) => {
+                    static_assertions::assert_not_impl_all!($ty: std::panic::UnwindSafe);
+                };
+            }
+            #[allow(unused_macros)]
+            macro_rules! assert_not_ref_unwind_safe {
+                ($ty:ty) => {
+                    static_assertions::assert_not_impl_all!($ty: std::panic::RefUnwindSafe);
+                };
+            }
+        });
+    }
+    out.extend(quote! {
         const _: fn() = || {
             #tokens
         };
-    };
+    });
     write(function_name!(), &out_dir.join("assert_impl.rs"), out)?;
 
     Ok(())
