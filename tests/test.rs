@@ -64,8 +64,6 @@ fn misuse_get_mut() {
 }
 
 pub mod assert_impl {
-    #![allow(clippy::extra_unused_type_parameters)] // https://github.com/rust-lang/rust-clippy/issues/10318
-
     use std::{future::Future, pin::Pin};
 
     use static_assertions::assert_impl_all as assert_impl;
