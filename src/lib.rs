@@ -141,7 +141,10 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
     clippy::transmute_undefined_repr,
     clippy::undocumented_unsafe_blocks,
 )]
-#![allow(clippy::must_use_candidate)]
+#![allow(
+    clippy::must_use_candidate,
+    clippy::borrow_as_ptr, // https://github.com/rust-lang/rust-clippy/issues/8286
+)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(test)]
