@@ -12,6 +12,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 - Track location that `AssertUnmoved` being first pinned-mutably accessed.
 
+- Fix build error from dependency when built with `-Z minimal-versions`.
+
 ## [0.1.4] - 2022-02-06
 
 - Use `#[track_caller]`.
