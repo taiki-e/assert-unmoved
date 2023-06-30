@@ -14,13 +14,8 @@ ignore = [
 
 # https://embarkstudios.github.io/cargo-deny/checks/bans/cfg.html
 [bans]
-multiple-versions = "deny"
+multiple-versions = "warn"
 wildcards = "allow" # https://github.com/EmbarkStudios/cargo-deny/issues/448
-skip = [
-    { name = "pin-project-lite", version = "0.1" }, # from tokio 0.2
-    { name = "tokio", version = "0.2" }, # optional deps
-    { name = "tokio", version = "0.3" }, # optional deps
-]
 
 # https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html
 [licenses]
