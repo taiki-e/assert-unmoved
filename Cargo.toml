@@ -1,8 +1,8 @@
 [package]
 name = "assert-unmoved"
 version = "0.1.4"
-edition = "2021"
-rust-version = "1.56"
+edition = "2018"
+rust-version = "1.46"
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/assert-unmoved"
 keywords = ["assert", "pin"]
@@ -19,7 +19,6 @@ rustdoc-args = ["--cfg", "docsrs"]
 targets = ["x86_64-unknown-linux-gnu"]
 
 [workspace]
-resolver = "2"
 members = ["tools/codegen"]
 
 [lib]

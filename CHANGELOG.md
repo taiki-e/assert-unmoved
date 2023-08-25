@@ -14,6 +14,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 - Fix build error from dependency when built with `-Z minimal-versions`.
 
+- Restore compatibility with Rust 1.46 by replacing `pin-project` with `pin-project-lite`.
+
 ## [0.1.4] - 2022-02-06
 
 - Use `#[track_caller]`.
