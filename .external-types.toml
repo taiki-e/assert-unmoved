@@ -7,7 +7,4 @@ allowed_external_types = [
     "futures_io::*",
     "futures_sink::*",
     "tokio::*",
-
-    # TODO: rustdoc bug
-    "pin_project::*",
 ]
