@@ -8,20 +8,41 @@ use core::{
 };
 use std::thread;
 
-use pin_project::{pin_project, pinned_drop};
+use pin_project_lite::pin_project;
 
-/// A type that asserts that the underlying type is not moved after being pinned
-/// and mutably accessed.
-///
-/// See crate level documentation for details.
-#[pin_project(PinnedDrop, !Unpin)]
-#[derive(Debug)]
-pub struct AssertUnmoved<T> {
-    #[pin]
-    inner: T,
-    // Invariant: The pointer is never dereferenced.
-    this_ptr: *const Self,
-    first_pinned_mutably_accessed_at: Option<&'static Location<'static>>,
+pin_project! {
+    /// A type that asserts that the underlying type is not moved after being pinned
+    /// and mutably accessed.
+    ///
+    /// See crate level documentation for details.
+    #[project(!Unpin)]
+    #[derive(Debug)]
+    pub struct AssertUnmoved<T> {
+        #[pin]
+        inner: T,
+        // Invariant: The pointer is never dereferenced.
+        this_ptr: *const AssertUnmoved<T>,
+        first_pinned_mutably_accessed_at: Option<&'static Location<'static>>,
+    }
+    impl<T> PinnedDrop for AssertUnmoved<T> {
+        /// # Panics
+        ///
+        /// Panics if this `AssertUnmoved` moved after being pinned and mutably accessed.
+        fn drop(this: Pin<&mut Self>) {
+            // If the thread is panicking then we can't panic again as that will
+            // cause the process to be aborted.
+            if !thread::panicking() && !this.this_ptr.is_null() {
+                let cur_this = &*this as *const AssertUnmoved<T>;
+                assert_eq!(
+                    this.this_ptr,
+                    cur_this,
+                    "AssertUnmoved moved before drop\n\
+                     \tfirst pinned mutably accessed at {}\n",
+                    this.first_pinned_mutably_accessed_at.unwrap()
+                );
+            }
+        }
+    }
 }
 
 // SAFETY: Safe due to `this_ptr`'s invariant.
@@ -118,27 +139,6 @@ impl<T> AssertUnmoved<T> {
             );
         }
         self.project().inner
-    }
-}
-
-#[pinned_drop]
-impl<T> PinnedDrop for AssertUnmoved<T> {
-    /// # Panics
-    ///
-    /// Panics if this `AssertUnmoved` moved after being pinned and mutably accessed.
-    fn drop(self: Pin<&mut Self>) {
-        // If the thread is panicking then we can't panic again as that will
-        // cause the process to be aborted.
-        if !thread::panicking() && !self.this_ptr.is_null() {
-            let cur_this = &*self as *const Self;
-            assert_eq!(
-                self.this_ptr,
-                cur_this,
-                "AssertUnmoved moved before drop\n\
-                 \tfirst pinned mutably accessed at {}\n",
-                self.first_pinned_mutably_accessed_at.unwrap()
-            );
-        }
     }
 }
 
