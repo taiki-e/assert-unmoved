@@ -111,6 +111,8 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 - **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
 - **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
 
+Note: The MSRV when these features are enabled depends on the MSRV of these crates.
+
 [`Pin::new_unchecked`]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.new_unchecked
 [`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
 [futures-test]: https://docs.rs/futures-test
