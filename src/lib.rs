@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
 /*!
 A type that asserts that the underlying type is not moved after being
 [pinned][pin] and mutably accessed.
