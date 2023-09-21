@@ -122,29 +122,33 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
     )
 ))]
 #![warn(
-    missing_debug_implementations,
-    missing_docs,
     rust_2018_idioms,
     single_use_lifetimes,
-    unreachable_pub
-)]
-#![cfg_attr(test, warn(unsafe_op_in_unsafe_fn))] // unsafe_op_in_unsafe_fn requires Rust 1.52
-#![cfg_attr(not(test), allow(unused_unsafe))]
-#![warn(
+    unreachable_pub,
     clippy::pedantic,
-    // lints for public library
+    // Lints that may help when writing public library.
+    missing_debug_implementations,
+    missing_docs,
     clippy::alloc_instead_of_core,
     clippy::exhaustive_enums,
     clippy::exhaustive_structs,
-    clippy::std_instead_of_alloc,
+    clippy::impl_trait_in_params,
+    // clippy::missing_inline_in_public_items,
+    // clippy::std_instead_of_alloc,
     clippy::std_instead_of_core,
-    // lints that help writing unsafe code
+    // Lints that may help when writing unsafe code.
+    improper_ctypes,
+    improper_ctypes_definitions,
+    // unsafe_op_in_unsafe_fn, // set conditionally since it requires Rust 1.52
     clippy::as_ptr_cast_mut,
     clippy::default_union_representation,
+    clippy::inline_asm_x86_att_syntax,
     clippy::trailing_empty_array,
     clippy::transmute_undefined_repr,
     clippy::undocumented_unsafe_blocks,
 )]
+#![cfg_attr(test, warn(unsafe_op_in_unsafe_fn))] // unsafe_op_in_unsafe_fn requires Rust 1.52
+#![cfg_attr(not(test), allow(unused_unsafe))]
 #![allow(
     clippy::must_use_candidate,
     clippy::borrow_as_ptr, // https://github.com/rust-lang/rust-clippy/issues/8286
