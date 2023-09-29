@@ -10,6 +10,8 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+- Remove support for old version of tokio (0.2 and 0.3).
+
 ## [0.1.5] - 2023-08-25
 
 - Track location that `AssertUnmoved` being first pinned-mutably accessed.
