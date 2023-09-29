@@ -117,6 +117,7 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
         allow(dead_code, unused_variables)
     )
 ))]
+#![forbid(unsafe_code)]
 #![warn(
     rust_2018_idioms,
     single_use_lifetimes,
@@ -132,23 +133,8 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
     // clippy::missing_inline_in_public_items,
     // clippy::std_instead_of_alloc,
     clippy::std_instead_of_core,
-    // Lints that may help when writing unsafe code.
-    improper_ctypes,
-    improper_ctypes_definitions,
-    // unsafe_op_in_unsafe_fn, // set conditionally since it requires Rust 1.52
-    clippy::as_ptr_cast_mut,
-    clippy::default_union_representation,
-    clippy::inline_asm_x86_att_syntax,
-    clippy::trailing_empty_array,
-    clippy::transmute_undefined_repr,
-    clippy::undocumented_unsafe_blocks,
 )]
-#![cfg_attr(test, warn(unsafe_op_in_unsafe_fn))] // unsafe_op_in_unsafe_fn requires Rust 1.52
-#![cfg_attr(not(test), allow(unused_unsafe))]
-#![allow(
-    clippy::must_use_candidate,
-    clippy::borrow_as_ptr, // https://github.com/rust-lang/rust-clippy/issues/8286
-)]
+#![allow(clippy::must_use_candidate)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(test)]
