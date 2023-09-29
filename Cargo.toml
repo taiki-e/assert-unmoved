@@ -30,7 +30,7 @@ futures03 = ["futures-core", "futures-io", "futures-sink"]
 # Implements tokio v1 traits for assert-unmoved types.
 tokio1 = ["tokio1-crate"]
 
-# Note: futures-*, tokio, and bytes are public dependencies.
+# Note: futures-* and tokio are public dependencies.
 [dependencies]
 pin-project-lite = "0.2.13"
 

@@ -7,9 +7,6 @@ yanked = "deny"
 notice = "deny"
 git-fetch-with-cli = true
 ignore = [
-    "RUSTSEC-2021-0124", # tokio 0.2/0.3 (optional deps)
-    "RUSTSEC-2023-0005", # tokio 0.2/0.3 (optional deps)
-    "RUSTSEC-2021-0072", # tokio 0.3 (optional deps)
 ]
 
 # https://embarkstudios.github.io/cargo-deny/checks/bans/cfg.html
@@ -20,7 +17,6 @@ build.allow-build-scripts = [
     { name = "backtrace" }, # via tokio
     { name = "futures-core" },
     { name = "libc" }, # via backtrace via tokio
-    { name = "tokio" }, # 0.3 only
 ]
 
 # https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html
