@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+#![allow(clippy::undocumented_unsafe_blocks)]
+
 use std::{future::Future, pin::Pin, task::Context};
 
 use assert_unmoved::AssertUnmoved;
