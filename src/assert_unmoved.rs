@@ -32,7 +32,7 @@ pin_project! {
             // If the thread is panicking then we can't panic again as that will
             // cause the process to be aborted.
             if !thread::panicking() && this.this_addr != 0 {
-                let cur_this = &*this as *const AssertUnmoved<T> as usize;
+                let cur_this = this.addr();
                 assert_eq!(
                     this.this_addr,
                     cur_this,
@@ -71,7 +71,7 @@ impl<T> AssertUnmoved<T> {
     #[track_caller]
     pub fn get_mut(&mut self) -> &mut T {
         if self.this_addr != 0 {
-            let cur_this = &*self as *const Self as usize;
+            let cur_this = self.addr();
             assert_eq!(
                 self.this_addr,
                 cur_this,
@@ -119,7 +119,7 @@ impl<T> AssertUnmoved<T> {
     /// [`Stream`]: https://docs.rs/futures/0.3/futures/stream/trait.Stream.html
     #[track_caller]
     pub fn get_pin_mut(mut self: Pin<&mut Self>) -> Pin<&mut T> {
-        let cur_this = &*self as *const Self as usize;
+        let cur_this = self.addr();
         if self.this_addr == 0 {
             // First time being pinned and mutably accessed.
             *self.as_mut().project().this_addr = cur_this;
@@ -134,6 +134,10 @@ impl<T> AssertUnmoved<T> {
             );
         }
         self.project().inner
+    }
+
+    fn addr(&self) -> usize {
+        self as *const Self as usize
     }
 }
 
