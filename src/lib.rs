@@ -131,7 +131,7 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
     clippy::std_instead_of_core,
 )]
 #![allow(clippy::must_use_candidate)]
-#![cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(assert_unmoved_doc_cfg, feature(doc_cfg))]
 
 #[cfg(test)]
 #[path = "gen/assert_impl.rs"]

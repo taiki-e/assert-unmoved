@@ -177,7 +177,7 @@ impl<F: Future> Future for AssertUnmoved<F> {
 }
 
 #[cfg(feature = "futures03")]
-#[cfg_attr(docsrs, doc(cfg(feature = "futures03")))]
+#[cfg_attr(assert_unmoved_doc_cfg, doc(cfg(feature = "futures03")))]
 mod futures03 {
     use core::{
         pin::Pin,
@@ -317,7 +317,7 @@ mod futures03 {
 }
 
 #[cfg(feature = "tokio1")]
-#[cfg_attr(docsrs, doc(cfg(feature = "tokio1")))]
+#[cfg_attr(assert_unmoved_doc_cfg, doc(cfg(feature = "tokio1")))]
 mod tokio1 {
     use core::{
         pin::Pin,

@@ -15,7 +15,7 @@ and mutably accessed.
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "assert_unmoved_doc_cfg"]
 targets = ["x86_64-unknown-linux-gnu"]
 
 [package.metadata.cargo_check_external_types]
