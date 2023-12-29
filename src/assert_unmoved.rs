@@ -93,7 +93,7 @@ impl<T> AssertUnmoved<T> {
     ///
     /// Implement own [`Stream`] trait for `AssertUnmoved`.
     ///
-    /// ```rust
+    /// ```
     /// use std::{
     ///     pin::Pin,
     ///     task::{Context, Poll},
