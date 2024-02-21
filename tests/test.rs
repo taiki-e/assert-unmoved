@@ -68,8 +68,6 @@ fn misuse_get_mut() {
 }
 
 pub mod assert_impl {
-    use std::{future::Future, pin::Pin};
-
     use static_assertions::assert_impl_all as assert_impl;
 
     use crate::*;
