@@ -131,6 +131,7 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
     clippy::std_instead_of_core,
 )]
 #![allow(clippy::must_use_candidate)]
+// docs.rs only (cfg is enabled via [package.metadata.docs.rs] in Cargo.toml, not build script)
 #![cfg_attr(assert_unmoved_doc_cfg, feature(doc_cfg))]
 
 #[cfg(test)]
