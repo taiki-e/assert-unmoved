@@ -16,7 +16,6 @@ wildcards = "deny"
 allow-wildcard-paths = true
 build.allow-build-scripts = [
     { name = "backtrace" }, # via tokio
-    { name = "futures-core" },
     { name = "libc" }, # via backtrace via tokio
 ]
 
