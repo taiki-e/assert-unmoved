@@ -2,10 +2,14 @@
 
 #![allow(clippy::undocumented_unsafe_blocks)]
 
-use std::{future::Future, pin::Pin, task::Context};
+use std::{
+    future::{pending, Future},
+    pin::Pin,
+    task::Context,
+};
 
 use assert_unmoved::AssertUnmoved;
-use futures_util::{future::pending, task::noop_waker};
+use futures::task::noop_waker;
 
 #[test]
 fn do_not_panic_when_not_polled() {
@@ -69,6 +73,8 @@ fn misuse_get_mut() {
 
 pub mod assert_impl {
     use static_assertions::assert_impl_all as assert_impl;
+    #[cfg(feature = "tokio1")]
+    use tokio1_crate as tokio;
 
     use crate::*;
 
@@ -92,11 +98,11 @@ pub mod assert_impl {
     assert_impl!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncBufRead>>>: futures_io::AsyncBufRead);
 
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncRead>>>: tokio1_crate::io::AsyncRead);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncRead>>>: tokio::io::AsyncRead);
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncWrite>>>: tokio1_crate::io::AsyncWrite);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncWrite>>>: tokio::io::AsyncWrite);
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncSeek>>>: tokio1_crate::io::AsyncSeek);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncSeek>>>: tokio::io::AsyncSeek);
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1_crate::io::AsyncBufRead>>>: tokio1_crate::io::AsyncBufRead);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncBufRead>>>: tokio::io::AsyncBufRead);
 }

@@ -34,7 +34,7 @@ An example of detecting incorrect [`Pin::new_unchecked`] use (**should panic**):
 use std::pin::Pin;
 
 use assert_unmoved::AssertUnmoved;
-use futures_util::{
+use futures::{
     future::{self, Future},
     task::{noop_waker, Context},
 };
@@ -60,7 +60,7 @@ An example of detecting incorrect [`StreamExt::next`] implementation (**should p
 use std::pin::Pin;
 
 use assert_unmoved::AssertUnmoved;
-use futures_util::{
+use futures::{
     future::Future,
     stream::{self, Stream},
     task::{noop_waker, Context, Poll},
