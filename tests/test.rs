@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![allow(clippy::undocumented_unsafe_blocks)]
+#![allow(clippy::let_underscore_future, clippy::undocumented_unsafe_blocks)]
 
 use std::{
     future::{pending, Future},
@@ -53,10 +53,9 @@ fn moved_before_drop() {
     let mut x = Test(Some(AssertUnmoved::new(pending::<()>())));
     let x = unsafe { Pin::new_unchecked(&mut x) };
     // This `map_unchecked_mut` is unsound because `Test`'s destructor moves `T`.
-    unsafe { x.map_unchecked_mut(|x| &mut x.0) }.as_pin_mut().unwrap().get_pin_mut();
+    let _ = unsafe { x.map_unchecked_mut(|x| &mut x.0) }.as_pin_mut().unwrap().get_pin_mut();
 }
 
-#[allow(clippy::let_underscore_future)]
 #[test]
 #[should_panic(expected = "AssertUnmoved moved after get_pin_mut call")]
 fn misuse_get_mut() {

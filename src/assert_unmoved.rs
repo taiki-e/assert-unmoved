@@ -47,6 +47,7 @@ pin_project! {
 
 impl<T> AssertUnmoved<T> {
     /// Creates a new `AssertUnmoved`.
+    #[must_use]
     pub const fn new(inner: T) -> Self {
         Self { inner, this_addr: 0, first_pinned_mutably_accessed_at: None }
     }
@@ -56,6 +57,7 @@ impl<T> AssertUnmoved<T> {
     /// Unlike [`get_mut`](AssertUnmoved::get_mut) method, this method can always called.
     ///
     /// You can also access the underlying type via [`Deref`](std::ops::Deref) impl.
+    #[must_use]
     pub const fn get_ref(&self) -> &T {
         &self.inner
     }
@@ -69,6 +71,7 @@ impl<T> AssertUnmoved<T> {
     ///
     /// Panics if this `AssertUnmoved` moved after being pinned and mutably accessed.
     #[track_caller]
+    #[must_use]
     pub fn get_mut(&mut self) -> &mut T {
         if self.this_addr != 0 {
             let cur_this = self.addr();
@@ -118,6 +121,7 @@ impl<T> AssertUnmoved<T> {
     ///
     /// [`Stream`]: https://docs.rs/futures/0.3/futures/stream/trait.Stream.html
     #[track_caller]
+    #[must_use]
     pub fn get_pin_mut(mut self: Pin<&mut Self>) -> Pin<&mut T> {
         let cur_this = self.addr();
         if self.this_addr == 0 {
