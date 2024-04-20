@@ -119,7 +119,7 @@ impl<T> AssertUnmoved<T> {
     /// }
     /// ```
     ///
-    /// [`Stream`]: https://docs.rs/futures/0.3/futures/stream/trait.Stream.html
+    /// [`Stream`]: https://docs.rs/futures/latest/futures/stream/trait.Stream.html
     #[track_caller]
     #[must_use]
     pub fn get_pin_mut(mut self: Pin<&mut Self>) -> Pin<&mut T> {

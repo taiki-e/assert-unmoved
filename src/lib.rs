@@ -101,7 +101,7 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 Note: The MSRV when these features are enabled depends on the MSRV of these crates.
 
 [`Pin::new_unchecked`]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.new_unchecked
-[`StreamExt::next`]: https://docs.rs/futures/0.3/futures/stream/trait.StreamExt.html#method.next
+[`StreamExt::next`]: https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.next
 [futures-test]: https://docs.rs/futures-test
 [futures03]: https://docs.rs/futures/0.3
 [pin]: https://doc.rust-lang.org/std/pin/index.html
