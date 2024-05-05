@@ -52,8 +52,6 @@ jobs:
       all-features: false
   tidy:
     uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
-    with:
-      known-cfgs: assert_unmoved_doc_cfg
 
   test:
     strategy:

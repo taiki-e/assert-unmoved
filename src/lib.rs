@@ -130,8 +130,8 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
     // clippy::std_instead_of_alloc,
     clippy::std_instead_of_core,
 )]
-// docs.rs only (cfg is enabled via [package.metadata.docs.rs] in Cargo.toml, not build script)
-#![cfg_attr(assert_unmoved_doc_cfg, feature(doc_cfg))]
+// docs.rs only (cfg is enabled by docs.rs, not build script)
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(test)]
 #[path = "gen/assert_impl.rs"]
