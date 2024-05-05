@@ -34,6 +34,7 @@ pub(crate) fn workspace_root() -> PathBuf {
 pub(crate) fn header(function_name: &str) -> String {
     // rust-analyzer does not respect outer attribute (#[rustfmt::skip]) on
     // a module without a body and unstable ignore option in .rustfmt.toml.
+    // https://github.com/rust-lang/rust-analyzer/issues/10826
     // So use inner attribute under cfg(rustfmt).
     format!(
         "// SPDX-License-Identifier: Apache-2.0 OR MIT
