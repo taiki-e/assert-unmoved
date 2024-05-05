@@ -132,6 +132,7 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 )]
 // docs.rs only (cfg is enabled by docs.rs, not build script)
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(test, allow(unexpected_cfgs))] // https://github.com/rust-lang/rust/issues/124735
 
 #[cfg(test)]
 #[path = "gen/assert_impl.rs"]
