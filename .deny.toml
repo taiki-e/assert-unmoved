@@ -7,6 +7,9 @@ yanked = "deny"
 notice = "deny"
 git-fetch-with-cli = true
 ignore = [
+    "RUSTSEC-2021-0124", # tokio 0.2/0.3 (optional deps)
+    "RUSTSEC-2023-0005", # tokio 0.2/0.3 (optional deps)
+    "RUSTSEC-2021-0072", # tokio 0.3 (optional deps)
 ]
 
 # https://embarkstudios.github.io/cargo-deny/checks/bans/cfg.html
@@ -22,9 +25,11 @@ build.include-archives = true
 build.allow-build-scripts = [
     { name = "backtrace" }, # via tokio
     { name = "libc" }, # via backtrace via tokio
+    { name = "tokio" }, # 0.3 only
 ]
 build.bypass = [
-    { name = "addr2line", allow-globs = ["*.sh"] }, # https://github.com/gimli-rs/addr2line/pull/281
+    { name = "addr2line", allow-globs = ["*.sh"] }, # via backtrace via tokio 1 https://github.com/gimli-rs/addr2line/pull/281 / https://github.com/rust-lang/backtrace-rs/pull/612
+    { name = "autocfg", allow-globs = ["tests/wrap_ignored"] }, # via tokio 0.3
 ]
 
 # https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html

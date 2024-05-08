@@ -34,14 +34,21 @@ doc-scrape-examples = false
 futures03 = ["futures-core", "futures-io", "futures-sink"]
 # Implements tokio v1 traits for assert-unmoved types.
 tokio1 = ["tokio1-crate"]
+# Implements tokio v0.3 traits for assert-unmoved types.
+tokio03 = ["tokio03-crate"]
+# Implements tokio v0.2 traits for assert-unmoved types.
+tokio02 = ["tokio02-crate", "bytes05"]
 
-# Note: futures-* and tokio are public dependencies.
+# Note: futures-*, tokio, and bytes are public dependencies.
 [dependencies]
 pin-project-lite = "0.2.13"
 
 futures-core = { version = "0.3", optional = true, default-features = false }
 futures-io = { version = "0.3", optional = true, default-features = false, features = ["std"] }
 futures-sink = { version = "0.3", optional = true, default-features = false }
+tokio02-crate = { package = "tokio", version = "0.2.5", optional = true, default-features = false }
+bytes05 = { package = "bytes", version = "0.5", optional = true, default-features = false, features = ["std"] }
+tokio03-crate = { package = "tokio", version = "0.3", optional = true, default-features = false }
 tokio1-crate = { package = "tokio", version = "1", optional = true, default-features = false }
 
 [dev-dependencies]

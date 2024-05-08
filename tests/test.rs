@@ -72,8 +72,12 @@ fn misuse_get_mut() {
 
 pub mod assert_impl {
     use static_assertions::assert_impl_all as assert_impl;
+    #[cfg(feature = "tokio02")]
+    use tokio02_crate as tokio02;
+    #[cfg(feature = "tokio03")]
+    use tokio03_crate as tokio03;
     #[cfg(feature = "tokio1")]
-    use tokio1_crate as tokio;
+    use tokio1_crate as tokio1;
 
     use crate::*;
 
@@ -96,12 +100,30 @@ pub mod assert_impl {
     #[cfg(feature = "futures03")]
     assert_impl!(AssertUnmoved<Pin<Box<dyn futures_io::AsyncBufRead>>>: futures_io::AsyncBufRead);
 
+    #[cfg(feature = "tokio02")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02::io::AsyncRead>>>: tokio02::io::AsyncRead);
+    #[cfg(feature = "tokio02")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02::io::AsyncWrite>>>: tokio02::io::AsyncWrite);
+    #[cfg(feature = "tokio02")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02::io::AsyncSeek>>>: tokio02::io::AsyncSeek);
+    #[cfg(feature = "tokio02")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio02::io::AsyncBufRead>>>: tokio02::io::AsyncBufRead);
+
+    #[cfg(feature = "tokio03")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03::io::AsyncRead>>>: tokio03::io::AsyncRead);
+    #[cfg(feature = "tokio03")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03::io::AsyncWrite>>>: tokio03::io::AsyncWrite);
+    #[cfg(feature = "tokio03")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03::io::AsyncSeek>>>: tokio03::io::AsyncSeek);
+    #[cfg(feature = "tokio03")]
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio03::io::AsyncBufRead>>>: tokio03::io::AsyncBufRead);
+
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncRead>>>: tokio::io::AsyncRead);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1::io::AsyncRead>>>: tokio1::io::AsyncRead);
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncWrite>>>: tokio::io::AsyncWrite);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1::io::AsyncWrite>>>: tokio1::io::AsyncWrite);
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncSeek>>>: tokio::io::AsyncSeek);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1::io::AsyncSeek>>>: tokio1::io::AsyncSeek);
     #[cfg(feature = "tokio1")]
-    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio::io::AsyncBufRead>>>: tokio::io::AsyncBufRead);
+    assert_impl!(AssertUnmoved<Pin<Box<dyn tokio1::io::AsyncBufRead>>>: tokio1::io::AsyncBufRead);
 }

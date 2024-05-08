@@ -97,6 +97,8 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 
 - **`futures03`** — Implements [futures v0.3][futures03] traits for assert-unmoved types.
 - **`tokio1`** — Implements [tokio v1][tokio1] traits for assert-unmoved types.
+- **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
+- **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
 
 Note: The MSRV when these features are enabled depends on the MSRV of these crates.
 
@@ -107,6 +109,8 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 [pin]: https://doc.rust-lang.org/std/pin/index.html
 [rust-lang/futures-rs#2148]: https://github.com/rust-lang/futures-rs/pull/2148
 [rust-lang/futures-rs#2208]: https://github.com/rust-lang/futures-rs/pull/2208
+[tokio02]: https://docs.rs/tokio/0.2
+[tokio03]: https://docs.rs/tokio/0.3
 [tokio1]: https://docs.rs/tokio/1
 */
 
@@ -117,7 +121,8 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
         allow(dead_code, unused_variables)
     )
 ))]
-#![forbid(unsafe_code)]
+#![cfg_attr(test, warn(unsafe_op_in_unsafe_fn))] // unsafe_op_in_unsafe_fn requires Rust 1.52
+#![cfg_attr(not(test), allow(unused_unsafe))]
 #![warn(
     // Lints that may help when writing public library.
     missing_debug_implementations,
