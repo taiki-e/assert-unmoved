@@ -28,7 +28,6 @@ build.allow-build-scripts = [
     { name = "tokio" }, # 0.3 only
 ]
 build.bypass = [
-    { name = "addr2line", allow-globs = ["*.sh"] }, # via backtrace via tokio 1 https://github.com/gimli-rs/addr2line/pull/281 / https://github.com/rust-lang/backtrace-rs/pull/612
     { name = "autocfg", allow-globs = ["tests/wrap_ignored"] }, # via tokio 0.3
 ]
 
