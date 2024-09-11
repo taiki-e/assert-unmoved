@@ -22,9 +22,26 @@ build.allow-build-scripts = [
     { name = "backtrace" }, # via tokio
     { name = "libc" }, # via backtrace via tokio
     { name = "tokio" }, # 0.3 only
+    { name = "windows_aarch64_gnullvm" }, # via backtrace via tokio
+    { name = "windows_aarch64_msvc" }, # via backtrace via tokio
+    { name = "windows_i686_gnu" }, # via backtrace via tokio
+    { name = "windows_i686_gnullvm" }, # via backtrace via tokio
+    { name = "windows_i686_msvc" }, # via backtrace via tokio
+    { name = "windows_x86_64_gnu" }, # via backtrace via tokio
+    { name = "windows_x86_64_gnullvm" }, # via backtrace via tokio
+    { name = "windows_x86_64_msvc" }, # via backtrace via tokio
 ]
 build.bypass = [
     { name = "autocfg", allow-globs = ["tests/wrap_ignored"] }, # via tokio 0.3
+    # Import libraries are necessary because raw-dylib (requires 1.71+ for x86, 1.65+ for others) is not available on MSRV of them.
+    { name = "windows_aarch64_gnullvm", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
+    { name = "windows_aarch64_msvc", allow-globs = ["lib/*.lib"] }, # via backtrace via tokio
+    { name = "windows_i686_gnu", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
+    { name = "windows_i686_gnullvm", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
+    { name = "windows_i686_msvc", allow-globs = ["lib/*.lib"] }, # via backtrace via tokio
+    { name = "windows_x86_64_gnu", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
+    { name = "windows_x86_64_gnullvm", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
+    { name = "windows_x86_64_msvc", allow-globs = ["lib/*.lib"] }, # via backtrace via tokio
 ]
 
 # https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html
