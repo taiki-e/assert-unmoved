@@ -21,6 +21,7 @@ build.include-archives = true
 build.allow-build-scripts = [
     { name = "backtrace" }, # via tokio
     { name = "libc" }, # via backtrace via tokio
+    { name = "object" }, # via backtrace via tokio
     { name = "tokio" }, # 0.3 only
     { name = "windows_aarch64_gnullvm" }, # via backtrace via tokio
     { name = "windows_aarch64_msvc" }, # via backtrace via tokio
