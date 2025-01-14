@@ -2,7 +2,7 @@
 name = "assert-unmoved"
 version = "0.1.6" #publish:version
 edition = "2018"
-rust-version = "1.46"
+rust-version = "1.46" # For #[track_caller]
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/taiki-e/assert-unmoved"
 keywords = ["assert", "pin"]
