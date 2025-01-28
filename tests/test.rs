@@ -3,13 +3,22 @@
 #![allow(clippy::let_underscore_future, clippy::undocumented_unsafe_blocks)]
 
 use std::{
-    future::{pending, Future},
+    future::{pending, Future, Pending},
+    mem,
     pin::Pin,
     task::Context,
 };
 
-use assert_unmoved::AssertUnmoved;
+use assert_unmoved::*;
 use futures::task::noop_waker;
+
+// Test the size of public types. This is not intended to keep a specific size and
+// is intended to be used only as a help in optimization.
+#[test]
+#[cfg_attr(any(not(target_pointer_width = "64"), miri), ignore)] // We set -Z randomize-layout for Miri.
+fn size() {
+    assert_eq!(mem::size_of::<AssertUnmoved<Pending<()>>>(), 16);
+}
 
 #[test]
 fn do_not_panic_when_not_polled() {
