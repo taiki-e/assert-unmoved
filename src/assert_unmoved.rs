@@ -70,8 +70,8 @@ impl<T> AssertUnmoved<T> {
     /// # Panics
     ///
     /// Panics if this `AssertUnmoved` moved after being pinned and mutably accessed.
-    #[track_caller]
     #[must_use]
+    #[track_caller]
     pub fn get_mut(&mut self) -> &mut T {
         if self.this_addr != 0 {
             let cur_this = self.addr();
@@ -120,8 +120,8 @@ impl<T> AssertUnmoved<T> {
     /// ```
     ///
     /// [`Stream`]: https://docs.rs/futures/latest/futures/stream/trait.Stream.html
-    #[track_caller]
     #[must_use]
+    #[track_caller]
     pub fn get_pin_mut(mut self: Pin<&mut Self>) -> Pin<&mut T> {
         let cur_this = self.addr();
         if self.this_addr == 0 {
