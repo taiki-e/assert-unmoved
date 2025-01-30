@@ -139,7 +139,7 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(test)]
-#[path = "gen/assert_impl.rs"]
+#[path = "gen/tests/assert_impl.rs"]
 mod assert_impl;
 
 mod assert_unmoved;
