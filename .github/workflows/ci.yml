@@ -22,8 +22,6 @@ env:
   RUSTDOCFLAGS: -D warnings
   RUSTFLAGS: -D warnings
   RUSTUP_MAX_RETRIES: 10
-  # NB: sync with miri job's --exclude option
-  EXCLUDE: --exclude assert-unmoved-internal-codegen
 
 defaults:
   run:
@@ -38,13 +36,20 @@ jobs:
     uses: taiki-e/github-actions/.github/workflows/miri.yml@main
     with:
       event_name: ${{ github.event_name }}
-      # NB: sync with env.EXCLUDE
+      # NB: sync with test job's --exclude option
       args: --exclude assert-unmoved-internal-codegen
   msrv:
     uses: taiki-e/github-actions/.github/workflows/msrv.yml@main
     with:
       event_name: ${{ github.event_name }}
       all-features: false
+  test:
+    uses: taiki-e/github-actions/.github/workflows/test.yml@main
+    with:
+      # NB: sync with miri job's --exclude option
+      test-args: --exclude assert-unmoved-internal-codegen
+      no-std: false
+      optional-deps: ''
   tidy:
     uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
     permissions:
@@ -52,28 +57,6 @@ jobs:
       pull-requests: write # for gh pr edit --add-assignee
       repository-projects: read # for gh pr edit --add-assignee
     secrets: inherit
-
-  test:
-    strategy:
-      fail-fast: false
-      matrix:
-        rust:
-          - stable
-          - beta
-          - nightly
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: taiki-e/checkout-action@v1
-      - uses: taiki-e/github-actions/install-rust@main
-        with:
-          toolchain: ${{ matrix.rust }}
-      - uses: taiki-e/install-action@cargo-hack
-      - uses: taiki-e/install-action@cargo-minimal-versions
-      - run: cargo test --workspace --all-features ${EXCLUDE}
-      - run: cargo hack build --workspace --no-private --feature-powerset --no-dev-deps
-      - run: cargo minimal-versions build --workspace --no-private --detach-path-deps=skip-exact --all-features
-      - run: cargo minimal-versions build --workspace --no-private --detach-path-deps=skip-exact --all-features --direct
 
   codegen:
     runs-on: ubuntu-latest
