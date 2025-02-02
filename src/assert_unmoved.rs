@@ -15,7 +15,7 @@ pin_project! {
     /// A type that asserts that the underlying type is not moved after being pinned
     /// and mutably accessed.
     ///
-    /// See crate level documentation for details.
+    /// See the [crate-level documentation](crate) for details.
     #[project(!Unpin)]
     #[derive(Debug)]
     pub struct AssertUnmoved<T> {

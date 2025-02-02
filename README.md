@@ -6,6 +6,8 @@
 [![msrv](https://img.shields.io/badge/msrv-1.46-blue?style=flat-square&logo=rust)](https://www.rust-lang.org)
 [![github actions](https://img.shields.io/github/actions/workflow/status/taiki-e/assert-unmoved/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/taiki-e/assert-unmoved/actions)
 
+<!-- tidy:sync-markdown-to-rustdoc:start:src/lib.rs -->
+
 A type that asserts that the underlying type is not moved after being
 [pinned][pin] and mutably accessed.
 
@@ -28,6 +30,7 @@ assert-unmoved = "0.1"
 
 An example of detecting incorrect [`Pin::new_unchecked`] use (**should panic**):
 
+<!-- tidy:sync-markdown-to-rustdoc:code-block:should_panic -->
 ```rust
 use std::pin::Pin;
 
@@ -54,6 +57,7 @@ let _ = pinned_boxed_future.poll(&mut cx).is_pending();
 
 An example of detecting incorrect [`StreamExt::next`] implementation (**should panic**):
 
+<!-- tidy:sync-markdown-to-rustdoc:code-block:should_panic -->
 ```rust
 use std::pin::Pin;
 
@@ -121,6 +125,8 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 [tokio02]: https://docs.rs/tokio/0.2
 [tokio03]: https://docs.rs/tokio/0.3
 [tokio1]: https://docs.rs/tokio/1
+
+<!-- tidy:sync-markdown-to-rustdoc:end -->
 
 ## License
 

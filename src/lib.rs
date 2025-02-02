@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 /*!
+<!-- Note: Document from sync-markdown-to-rustdoc:start through sync-markdown-to-rustdoc:end
+     is synchronized from README.md. Any changes to that range are not preserved. -->
+<!-- tidy:sync-markdown-to-rustdoc:start -->
+
 A type that asserts that the underlying type is not moved after being
 [pinned][pin] and mutably accessed.
 
@@ -10,11 +14,20 @@ use cases. This also supports traits other than [futures][futures03].
 Many of the changes made in this project are also reflected upstream:
 [rust-lang/futures-rs#2148], [rust-lang/futures-rs#2208]
 
+## Usage
+
+Add this to your `Cargo.toml`:
+
+```toml
+[dependencies]
+assert-unmoved = "0.1"
+```
+
 ## Examples
 
 An example of detecting incorrect [`Pin::new_unchecked`] use (**should panic**):
 
-```rust,should_panic
+```should_panic
 use std::pin::Pin;
 
 use assert_unmoved::AssertUnmoved;
@@ -40,11 +53,7 @@ let _ = pinned_boxed_future.poll(&mut cx).is_pending();
 
 An example of detecting incorrect [`StreamExt::next`] implementation (**should panic**):
 
-```rust,should_panic
-# #[cfg(not(feature = "futures03"))]
-# fn main() { unimplemented!() }
-# #[cfg(feature = "futures03")]
-# fn main() {
+```should_panic
 use std::pin::Pin;
 
 use assert_unmoved::AssertUnmoved;
@@ -90,7 +99,6 @@ let next = Next(&mut boxed_stream);
 let mut pinned_next = Box::pin(next);
 // This should panic (as the future is moved).
 let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
-# }
 ```
 
 ## Optional features
@@ -112,6 +120,8 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 [tokio02]: https://docs.rs/tokio/0.2
 [tokio03]: https://docs.rs/tokio/0.3
 [tokio1]: https://docs.rs/tokio/1
+
+<!-- tidy:sync-markdown-to-rustdoc:end -->
 */
 
 #![doc(test(
