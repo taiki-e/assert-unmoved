@@ -151,6 +151,9 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 #[cfg(test)]
 #[path = "gen/tests/assert_impl.rs"]
 mod assert_impl;
+#[cfg(test)]
+#[path = "gen/tests/track_size.rs"]
+mod track_size;
 
 mod assert_unmoved;
 pub use crate::assert_unmoved::AssertUnmoved;
