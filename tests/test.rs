@@ -3,7 +3,7 @@
 #![allow(clippy::let_underscore_future, clippy::undocumented_unsafe_blocks)]
 
 use std::{
-    future::{pending, Future},
+    future::{Future, pending},
     pin::Pin,
     task::Context,
 };
@@ -72,12 +72,12 @@ fn misuse_get_mut() {
 
 pub mod assert_impl {
     use static_assertions::assert_impl_all as assert_impl;
+    #[cfg(feature = "tokio1")]
+    use tokio1_crate as tokio1;
     #[cfg(feature = "tokio02")]
     use tokio02_crate as tokio02;
     #[cfg(feature = "tokio03")]
     use tokio03_crate as tokio03;
-    #[cfg(feature = "tokio1")]
-    use tokio1_crate as tokio1;
 
     use crate::*;
 
