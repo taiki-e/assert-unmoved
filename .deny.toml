@@ -21,6 +21,7 @@ build.include-workspace = false # covered by tools/tidy.sh
 build.include-archives = true
 build.allow-build-scripts = [
     { name = "backtrace" }, # via tokio
+    { name = "io-uring" }, # via tokio
     { name = "libc" }, # via backtrace via tokio
     { name = "object" }, # via backtrace via tokio
     { name = "tokio" }, # 0.3 only
