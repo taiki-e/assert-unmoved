@@ -53,8 +53,9 @@ tokio1-crate = { package = "tokio", version = "1", optional = true, default-feat
 
 [dev-dependencies]
 futures = { package = "futures-util", version = "0.3", default-features = false }
+rustversion = "1"
 static_assertions = "1"
-test-helper = { features = ["git"], git = "https://github.com/taiki-e/test-helper.git", rev = "d2272e8" }
+test-helper = { features = ["git"], git = "https://github.com/taiki-e/test-helper.git", rev = "c5eac31" }
 
 [lints]
 workspace = true
