@@ -181,7 +181,6 @@ impl<F: Future> Future for AssertUnmoved<F> {
 }
 
 #[cfg(feature = "futures03")]
-#[cfg_attr(docsrs, doc(cfg(feature = "futures03")))]
 mod futures03 {
     use core::{
         pin::Pin,
@@ -321,7 +320,6 @@ mod futures03 {
 }
 
 #[cfg(feature = "tokio02")]
-#[cfg_attr(docsrs, doc(cfg(feature = "tokio02")))]
 mod tokio02 {
     use core::{
         mem::MaybeUninit,
@@ -426,7 +424,6 @@ mod tokio02 {
 }
 
 #[cfg(feature = "tokio03")]
-#[cfg_attr(docsrs, doc(cfg(feature = "tokio03")))]
 mod tokio03 {
     use core::{
         pin::Pin,
@@ -495,7 +492,6 @@ mod tokio03 {
 }
 
 #[cfg(feature = "tokio1")]
-#[cfg_attr(docsrs, doc(cfg(feature = "tokio1")))]
 mod tokio1 {
     use core::{
         pin::Pin,
