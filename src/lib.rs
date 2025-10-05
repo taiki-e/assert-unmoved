@@ -156,4 +156,4 @@ mod assert_impl;
 mod track_size;
 
 mod assert_unmoved;
-pub use crate::assert_unmoved::AssertUnmoved;
+pub use self::assert_unmoved::AssertUnmoved;
