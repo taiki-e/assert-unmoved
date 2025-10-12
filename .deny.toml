@@ -22,7 +22,7 @@ build.include-archives = true
 build.allow-build-scripts = [
     { name = "backtrace" }, # via tokio
     { name = "io-uring" }, # via tokio
-    { name = "libc" }, # via backtrace via tokio
+    { name = "libc" }, # via tokio
     { name = "object" }, # via backtrace via tokio
     { name = "tokio" }, # 0.3 only
     { name = "windows_aarch64_gnullvm" }, # via backtrace via tokio
@@ -36,6 +36,7 @@ build.allow-build-scripts = [
 ]
 build.bypass = [
     { name = "autocfg", allow-globs = ["tests/wrap_ignored"] }, # via tokio 0.3
+    { name = "libc", allow-globs = ["cherry-pick-stable.sh"] }, # via tokio
     # Import libraries are necessary because raw-dylib (requires 1.71+ for x86, 1.65+ for others) is not available on MSRV of them.
     { name = "windows_aarch64_gnullvm", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
     { name = "windows_aarch64_msvc", allow-globs = ["lib/*.lib"] }, # via backtrace via tokio
