@@ -1,6 +1,9 @@
 # https://embarkstudios.github.io/cargo-deny/checks/advisories/cfg.html
 [advisories]
+unused-ignored-advisory = "deny"
 yanked = "deny"
+unmaintained = "none"
+unsound = "all"
 git-fetch-with-cli = true
 ignore = [
     "RUSTSEC-2021-0124", # tokio 0.2/0.3 (optional deps)
@@ -51,6 +54,7 @@ build.bypass = [
 # https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html
 [licenses]
 unused-allowed-license = "deny"
+unused-license-exception = "deny"
 private.ignore = true
 allow = [
     "Apache-2.0",
@@ -59,6 +63,7 @@ allow = [
 
 # https://embarkstudios.github.io/cargo-deny/checks/sources/cfg.html
 [sources]
+unused-allowed-source = "deny"
 unknown-registry = "deny"
 unknown-git = "deny"
 allow-git = [
