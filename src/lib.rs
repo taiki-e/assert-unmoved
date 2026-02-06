@@ -124,6 +124,7 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 <!-- tidy:sync-markdown-to-rustdoc:end -->
 */
 
+#![no_std]
 #![doc(test(
     no_crate_inject,
     attr(allow(
@@ -149,6 +150,8 @@ Note: The MSRV when these features are enabled depends on the MSRV of these crat
 )]
 // docs.rs only (cfg is enabled by docs.rs, not build script)
 #![cfg_attr(docsrs, feature(doc_cfg))]
+
+extern crate std;
 
 #[cfg(test)]
 #[path = "gen/tests/assert_impl.rs"]
