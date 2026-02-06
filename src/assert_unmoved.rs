@@ -104,7 +104,7 @@ impl<T> AssertUnmoved<T> {
     ///
     /// use assert_unmoved::AssertUnmoved;
     ///
-    /// pub trait MyStream {
+    /// trait MyStream {
     ///     type Item;
     ///
     ///     fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>>;
