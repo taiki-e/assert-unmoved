@@ -18,30 +18,14 @@ concurrency:
 
 jobs:
   tidy:
-    uses: taiki-e/github-actions/.github/workflows/tidy.yml@3637cc7cf76d2ce698edc313bcd39bad8a92caa8 # main
+    uses: taiki-e/github-actions/.github/workflows/tidy.yml@1bb80ca038216cd1fb7b6ca6d76240b3772963ab # main
     permissions:
       security-events: write # for github/codeql-action/*
-  codegen:
-    needs: tidy
-    uses: taiki-e/github-actions/.github/workflows/gen.yml@3637cc7cf76d2ce698edc313bcd39bad8a92caa8 # main
-    permissions:
-      contents: write # unused (used when creating branch for pr)
-  miri:
-    needs: tidy
-    uses: taiki-e/github-actions/.github/workflows/rust-miri.yml@3637cc7cf76d2ce698edc313bcd39bad8a92caa8 # main
-    with:
-      # NB: sync with test job's --exclude option
-      args: --exclude assert-unmoved-internal-codegen
-  msrv:
-    needs: tidy
-    uses: taiki-e/github-actions/.github/workflows/rust-msrv.yml@3637cc7cf76d2ce698edc313bcd39bad8a92caa8 # main
-    with:
-      all-features: false
   test:
     needs: tidy
-    uses: taiki-e/github-actions/.github/workflows/rust-test.yml@3637cc7cf76d2ce698edc313bcd39bad8a92caa8 # main
+    uses: taiki-e/github-actions/.github/workflows/rust-test.yml@1bb80ca038216cd1fb7b6ca6d76240b3772963ab # main
     with:
-      # NB: sync with miri job's --exclude option
       test-args: --exclude assert-unmoved-internal-codegen
       no-std: false
       optional-deps: ''
+      msrv-all-features: false
