@@ -533,6 +533,7 @@ mod tokio1 {
             self.get_pin_mut().poll_shutdown(cx)
         }
 
+        #[allow(clippy::std_instead_of_core)] // https://github.com/rust-lang/rust-clippy/pull/16964
         #[track_caller]
         fn poll_write_vectored(
             self: Pin<&mut Self>,
