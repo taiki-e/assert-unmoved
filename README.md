@@ -108,10 +108,10 @@ let _ = pinned_next.as_mut().poll(&mut cx).is_pending();
 
 ## Optional features
 
-- **`futures03`** — Implements [futures v0.3][futures03] traits for assert-unmoved types.
-- **`tokio1`** — Implements [tokio v1][tokio1] traits for assert-unmoved types.
-- **`tokio03`** — Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
-- **`tokio02`** — Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
+- **`futures03`** - Implements [futures v0.3][futures03] traits for assert-unmoved types.
+- **`tokio1`** - Implements [tokio v1][tokio1] traits for assert-unmoved types.
+- **`tokio03`** - Implements [tokio v0.3][tokio03] traits for assert-unmoved types.
+- **`tokio02`** - Implements [tokio v0.2][tokio02] traits for assert-unmoved types.
 
 Note: The MSRV when these features are enabled depends on the MSRV of these crates.
 
