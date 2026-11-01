@@ -10,6 +10,7 @@ ignore = [
     "RUSTSEC-2023-0005", # tokio 0.2/0.3 (optional deps)
     "RUSTSEC-2025-0023", # tokio 0.2/0.3 (optional deps)
     "RUSTSEC-2021-0072", # tokio 0.3 (optional deps)
+    "RUSTSEC-2026-0386", # tokio 0.3 (optional deps)
 ]
 
 # https://embarkstudios.github.io/cargo-deny/checks/bans/cfg.html
@@ -38,15 +39,6 @@ build.allow-build-scripts = [
     { name = "windows_x86_64_msvc" }, # via backtrace via tokio
 ]
 build.bypass = [
-    # Import libraries are necessary because raw-dylib (requires 1.71+ for x86, 1.65+ for others) is not available on MSRV of them.
-    { name = "windows_aarch64_gnullvm", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
-    { name = "windows_aarch64_msvc", allow-globs = ["lib/*.lib"] }, # via backtrace via tokio
-    { name = "windows_i686_gnu", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
-    { name = "windows_i686_gnullvm", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
-    { name = "windows_i686_msvc", allow-globs = ["lib/*.lib"] }, # via backtrace via tokio
-    { name = "windows_x86_64_gnu", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
-    { name = "windows_x86_64_gnullvm", allow-globs = ["lib/*.a"] }, # via backtrace via tokio
-    { name = "windows_x86_64_msvc", allow-globs = ["lib/*.lib"] }, # via backtrace via tokio
 ]
 
 # https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html
