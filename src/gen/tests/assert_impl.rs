@@ -4,66 +4,23 @@
 // It is not intended for manual editing.
 
 #![cfg_attr(rustfmt, rustfmt::skip)]
-#![allow(
-    dead_code,
-    unused_macros,
-    clippy::std_instead_of_alloc,
-    clippy::std_instead_of_core,
-)]
-fn assert_send<T: ?Sized + Send>() {}
-fn assert_sync<T: ?Sized + Sync>() {}
-fn assert_unpin<T: ?Sized + Unpin>() {}
-fn assert_unwind_safe<T: ?Sized + std::panic::UnwindSafe>() {}
-fn assert_ref_unwind_safe<T: ?Sized + std::panic::RefUnwindSafe>() {}
-/// `Send` & `!Sync`
-struct NotSync(core::cell::UnsafeCell<()>);
-/// `!Send` & `Sync`
-struct NotSend(std::sync::MutexGuard<'static, ()>);
-/// `!Send` & `!Sync`
-struct NotSendSync(*const ());
-/// `!Unpin`
-struct NotUnpin(core::marker::PhantomPinned);
-/// `!UnwindSafe`
-struct NotUnwindSafe(&'static mut ());
-/// `!RefUnwindSafe`
-struct NotRefUnwindSafe(core::cell::UnsafeCell<()>);
-macro_rules! assert_not_send {
-    ($ty:ty) => {
-        static_assertions::assert_not_impl_all!($ty : Send);
-    };
-}
-macro_rules! assert_not_sync {
-    ($ty:ty) => {
-        static_assertions::assert_not_impl_all!($ty : Sync);
-    };
-}
-macro_rules! assert_not_unpin {
-    ($ty:ty) => {
-        static_assertions::assert_not_impl_all!($ty : Unpin);
-    };
-}
-macro_rules! assert_not_unwind_safe {
-    ($ty:ty) => {
-        static_assertions::assert_not_impl_all!($ty : std::panic::UnwindSafe);
-    };
-}
-macro_rules! assert_not_ref_unwind_safe {
-    ($ty:ty) => {
-        static_assertions::assert_not_impl_all!($ty : std::panic::RefUnwindSafe);
-    };
-}
-const _: fn() = || {
-    assert_send::<crate::assert_unmoved::AssertUnmoved<()>>();
-    assert_send::<crate::assert_unmoved::AssertUnmoved<NotSync>>();
-    assert_not_send!(crate::assert_unmoved::AssertUnmoved<NotSend>);
-    assert_sync::<crate::assert_unmoved::AssertUnmoved<()>>();
-    assert_sync::<crate::assert_unmoved::AssertUnmoved<NotSend>>();
-    assert_not_sync!(crate::assert_unmoved::AssertUnmoved<NotSync>);
-    assert_not_unpin!(crate::assert_unmoved::AssertUnmoved<()>);
-    assert_unwind_safe::<crate::assert_unmoved::AssertUnmoved<()>>();
-    assert_not_unwind_safe!(crate::assert_unmoved::AssertUnmoved<NotUnwindSafe>);
-    assert_ref_unwind_safe::<crate::assert_unmoved::AssertUnmoved<()>>();
-    assert_not_ref_unwind_safe!(
-        crate::assert_unmoved::AssertUnmoved<NotRefUnwindSafe>
-    );
-};
+test_helper::assert_value!(
+    crate ::assert_unmoved::AssertUnmoved < () > : Send & Sync & ! Unpin & UnwindSafe &
+    RefUnwindSafe
+);
+test_helper::assert_value!(
+    crate ::assert_unmoved::AssertUnmoved < test_helper::marker::NotSend > : ! Send &
+    Sync
+);
+test_helper::assert_value!(
+    crate ::assert_unmoved::AssertUnmoved < test_helper::marker::NotSync > : ! Sync &
+    Send
+);
+test_helper::assert_value!(
+    crate ::assert_unmoved::AssertUnmoved < test_helper::marker::NotUnwindSafe > : !
+    UnwindSafe
+);
+test_helper::assert_value!(
+    crate ::assert_unmoved::AssertUnmoved < test_helper::marker::NotRefUnwindSafe > : !
+    RefUnwindSafe
+);
